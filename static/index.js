@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             var policyIds = graphData['policyids'];
 
             for (var i = 0; i < policyIds.length; i++) {
-              pointText.push(`Policy ID: ${policyIds[i]}`);
+              pointText.push(`<a style="color:white;" href="/policies/${policyIds[i]}">CLICK HERE</a>`);
             }
 
             var trace1 = {

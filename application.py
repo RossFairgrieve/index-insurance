@@ -4,6 +4,7 @@ import os
 import json
 import numpy as np
 import pandas as pd
+import helpers
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -29,10 +30,10 @@ def convert():
 
     results = db.execute(f"""SELECT strike, clsr, premsaspc, policyid FROM policies WHERE minpayout={minpayout} AND bundles={bundles} AND targetmargin={targetmargin} ORDER BY strike""").fetchall()
 
-    strikes= [x[0] for x in results]
-    clsr = [x[1]*100 for x in results]
-    premsaspc = [x[2]*100 for x in results]
-    policyids = [x[3] for x in results]
+    strikes= [row.strike for row in results]
+    clsr = [row.clsr*100 for row in results]
+    premsaspc = [row.premsaspc*100 for row in results]
+    policyids = [row.policyid for row in results]
 
     data={"strikes": strikes,
           "clsr": clsr,
@@ -42,3 +43,31 @@ def convert():
     datajson = jsonify(data)
 
     return datajson
+
+@app.route("/policies/<policyid>", methods=["GET", "POST"])
+def policy(policyid):
+
+    results = db.execute(f"""SELECT payouts, premiums, strike, bundles, targetmargin, minpayout FROM policies WHERE policyid={policyid}""").fetchone()
+
+    payouts = pd.DataFrame(results.payouts).transpose()
+    payouts.index = [int(x) for x in payouts.index]
+    payouts = payouts.sort_index()
+
+    premiums = pd.DataFrame(results.premiums).transpose()
+    premiums.index = [int(x) for x in premiums.index]
+    premiums = premiums.sort_index()
+
+    strike = results.strike
+    bundles = results.bundles
+    targetmargin = results.targetmargin
+    minpayout = results.minpayout
+
+
+    # payouts= [x[0] for x in results]
+    # premiums = [x[1] for x in results]
+    # strike = [x[2] for x in results]
+    # bundles = [x[3] for x in results]
+    # minpayout = [x[4] for x in results]
+    # targetmargin = [x[5] for x in results]
+
+    return f"{strike}"

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Currency Converter</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="{{url_for('static', filename='index.js')}}"></script>
+
+    </head>
+    <body>
+        <div class="row">
+          <div class="col-md-6">
+                <form id="form">
+                    <div class="form-group">
+                        <label for="bundles">Premium grouping</label>
+                        <select class="form-control" id="bundles">
+                            <option value=0 selected>No grouping of premiums</option>
+                            <option value=3>9 groups</option>
+                            <option value=2>4 groups</option>
+                            <option value=1>Flat rate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="targetmargin">Insurer target margin</label>
+                        <select class="form-control" id="targetmargin">
+                            <option value=0>No margin (actuarially fair premium)</option>
+                            <option value=0.05>5%</option>
+                            <option value=0.1>10%</option>
+                            <option value=0.15>15%</option>
+                            <option value=0.2>20%</option>
+                            <option value=0.25 selected>25%</option>
+                            <option value=0.3>30%</option>
+                            <option value=0.4>40%</option>
+                            <option value=0.5>50%</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="minpayout">Minimum Payout</label>
+                        <select class="form-control" id="minpayout">
+                            <option value=0 selected>No minimum</option>
+                            <option value=500>500kg/ha equivalent</option>
+                            <option value=1000>1000kg/ha equivalent</option>
+                            <option value=2000>2000kg/ha equivalent</option>
+                        </select>
+                    </div>
+
+                    <!-- <input id="bundles" autocomplete="off" autofocus placeholder="Bundles" type="text"> -->
+                    <button type="submit" class="btn btn-primary">Analyse</button>
+                </form>
+            </div>
+        </div>
+        <br>
+        <div id="result"></div>
+
+
+    </body>
+</html>

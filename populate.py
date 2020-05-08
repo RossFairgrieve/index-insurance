@@ -33,9 +33,11 @@ def main():
     indexyields.columns = years
     realyields.columns = years
 
+    # --------------------------
+
     # Analyse combinations of insurance parameters at default crit loss
     # parameters and write results to the POLICIES table of the database
-
+    
     # strike = 4000
     # bundle = 2
     maxpayout = 999999
@@ -101,6 +103,26 @@ def main():
 
                     print(f"Added {counter} of {combinations}")
                     counter += 1
+
+    # Isolate dat for FARMS table
+    for ind, row in data.iterrows():
+        siteid = ind
+        farmarea = row['farmarea']
+        hhsize = row['householdsize']
+        region = row['group']
+        indexyield = indexyields.iloc[ind,:].to_json()
+        realyield = indexyields.iloc[ind,:].to_json()
+
+        # Write data to FARMS table
+        db.execute("""INSERT INTO farms (siteid, farmarea, hhsize, region, indexyields, realyields)
+                   VALUES (:siteid, :farmarea, :hhsize, :region, :indexyield, :realyield);""",
+                   {'siteid': siteid,
+                    'farmarea': farmarea,
+                    'hhsize': hhsize,
+                    'region': region,
+                    'indexyield': indexyield,
+                    'realyield': realyield
+                    })
 
     db.commit()
 

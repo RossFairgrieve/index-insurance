@@ -155,19 +155,19 @@ def evaluate(realyields_df, critthresh_df, payouts_df, premiums_df, farmarea_ser
     critloss_df_ins = critloss_df_ins.multiply(farmarea_series, axis=0)
 
     # Calculate reduction in total critical loss
-    critloss_sum_red = 1 - (critloss_df_ins.sum().sum() / critloss_df_noins.sum().sum())
+    critloss_sum_red = 100 * (1 - (critloss_df_ins.sum().sum() / critloss_df_noins.sum().sum()))
 
     # Calculate reduction in individual instances of critical loss
-    critloss_count_red = 1 - (critloss_df_ins[critloss_df_ins < 0].count().sum() / critloss_df_noins[critloss_df_noins < 0].count().sum())
+    critloss_count_red = 100 * (1 - (critloss_df_ins[critloss_df_ins < 0].count().sum() / critloss_df_noins[critloss_df_noins < 0].count().sum()))
 
     # Calculate reduction in number of farms experiencing critical loss
     # in at least one year over the insured period
     critloss_farms_ins = critloss_df_ins[critloss_df_ins < 0].count(axis=1)[critloss_df_ins[critloss_df_ins < 0].count(axis=1)>0].count()
     critloss_farms_noins = critloss_df_noins[critloss_df_noins < 0].count(axis=1)[critloss_df_noins[critloss_df_noins < 0].count(axis=1)>0].count()
-    critloss_farms_red = 1 - (critloss_farms_ins / critloss_farms_noins)
+    critloss_farms_red = 100 * (1 - (critloss_farms_ins / critloss_farms_noins))
 
     # Calculate the avergae cost of premiums as a percentage of annual harvest
-    prems_as_pc = (premiums_df.loc[:,startyear:].mean(axis=1) / realyields_df.loc[:,startyear:].mean(axis=1)).mean()
+    prems_as_pc = 100 * ((premiums_df.loc[:,startyear:].mean(axis=1) / realyields_df.loc[:,startyear:].mean(axis=1)).mean())
 
     # Calculate insurer margin over all sites and years
     total_payouts = (payouts_df.loc[:, startyear:].sum(axis=1) * farmarea_series).sum()

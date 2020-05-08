@@ -13,61 +13,123 @@ app = Flask(__name__, template_folder='./templates', static_folder="./static")
 
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
-# Could have used with engine.connect as connection:
+
+# Import data from csv
+data = pd.read_csv('data/data123.csv', header=0, index_col='siteid')
+
+# Pull out index yields and real yields into their own dataframes
+indcols = []
+realcols = []
+for col in data.columns:
+    if col[:5] == "index":
+        indcols.append(col)
+    elif col[:4] == 'real':
+        realcols.append(col)
+
+indexyields = data[indcols]
+realyields = data[realcols]
+
+# Create array of years and relabel the columns of indexyields and realyields
+years = [x[-4:] for x in indexyields.columns]
+indexyields.columns = years
+realyields.columns = years
+
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
+@app.route("/updategraphs", methods=["POST"])
+def updategraphs():
 
-@app.route("/convert", methods=["POST"])
-def convert():
-
-    # Query for currency exchange rate
+    # Query for form data
     bundles = request.form.get("bundles")
     targetmargin = request.form.get("targetmargin")
     minpayout = request.form.get("minpayout")
 
-    results = db.execute(f"""SELECT strike, clsr, premsaspc, policyid FROM policies WHERE minpayout={minpayout} AND bundles={bundles} AND targetmargin={targetmargin} ORDER BY strike""").fetchall()
+    strikes = np.linspace(0,6000,13)
+    policyid_list = []
+    payouts_list = []
+    premiums_list = []
+    crit_thresh_list = []
+    clsr_list = []
+    premsaspc_list = []
 
-    strikes= [row.strike for row in results]
-    clsr = [row.clsr*100 for row in results]
-    premsaspc = [row.premsaspc*100 for row in results]
-    policyids = [row.policyid for row in results]
+    for strike in strikes:
+        # Access pre-calculated payout and premium data from the database
+        # (calculation of these values is too computationally intensive to run in the app)
+        res = db.execute(f"""SELECT policyid, strike, payouts, premiums FROM policies WHERE strike={strike} AND minpayout={minpayout} AND bundles={bundles} AND targetmargin={targetmargin} ORDER BY strike""").fetchone()
 
-    data={"strikes": strikes,
-          "clsr": clsr,
-          "premsaspc": premsaspc,
-          "policyids": policyids}
+        policyid_list.append(res.policyid)
 
-    datajson = jsonify(data)
+        payouts = pd.DataFrame(res.payouts).transpose()
+        payouts.index = [int(x) for x in payouts.index]
+        payouts = payouts.sort_index()
 
-    return datajson
+        premiums = pd.DataFrame(res.premiums).transpose()
+        premiums.index = [int(x) for x in premiums.index]
+        premiums = premiums.sort_index()
 
-@app.route("/policies/<policyid>", methods=["GET", "POST"])
-def policy(policyid):
+        # Calculate critical critloss DF and total_thresh
+        crit_thresh_df = helpers.calc_crit(data,
+                                           indexyields,
+                                           loandeposit=0.20,
+                                           loaninterest=0.19,
+                                           kg_per_mouth=180)
 
-    results = db.execute(f"""SELECT payouts, premiums, strike, bundles, targetmargin, minpayout FROM policies WHERE policyid={policyid}""").fetchone()
+        cl_noins, cl_ins, clsr, clcr, clfr, premsaspc, realisedmargin = helpers.evaluate(realyields,
+                                                         crit_thresh_df,
+                                                         payouts,
+                                                         premiums,
+                                                         data['farmarea'],
+                                                         startyear='1990')
 
-    payouts = pd.DataFrame(results.payouts).transpose()
+        clsr_list.append(clsr)
+        premsaspc_list.append(premsaspc)
+
+    datadict = {"strikes": strikes.tolist(),
+                "clsr_list": clsr_list,
+                "premsaspc_list": premsaspc_list,
+                "policyid_list": policyid_list}
+
+    return jsonify(datadict)
+
+@app.route("/heatmap", methods=["POST"])
+def heatmap():
+    clicked_strike = request.form.get("strike")
+    bundles = request.form.get("bundles")
+    targetmargin = request.form.get("targetmargin")
+    minpayout = request.form.get("minpayout")
+
+    res = db.execute(f"""SELECT strike, payouts, premiums FROM policies WHERE strike={clicked_strike} AND minpayout={minpayout} AND bundles={bundles} AND targetmargin={targetmargin} ORDER BY strike""").fetchone()
+
+    payouts = pd.DataFrame(res.payouts).transpose()
     payouts.index = [int(x) for x in payouts.index]
     payouts = payouts.sort_index()
 
-    premiums = pd.DataFrame(results.premiums).transpose()
+    premiums = pd.DataFrame(res.premiums).transpose()
     premiums.index = [int(x) for x in premiums.index]
     premiums = premiums.sort_index()
 
-    strike = results.strike
-    bundles = results.bundles
-    targetmargin = results.targetmargin
-    minpayout = results.minpayout
+    # Calculate critical critloss DF and total_thresh
+    crit_thresh_df = helpers.calc_crit(data,
+                                       indexyields,
+                                       loandeposit=0.20,
+                                       loaninterest=0.19,
+                                       kg_per_mouth=180)
+
+    cl_noins, cl_ins, clsr, clcr, clfr, premsaspc, realisedmargin = helpers.evaluate(realyields,
+                                                     crit_thresh_df,
+                                                     payouts,
+                                                     premiums,
+                                                     data['farmarea'],
+                                                     startyear='1990')
 
 
-    # payouts= [x[0] for x in results]
-    # premiums = [x[1] for x in results]
-    # strike = [x[2] for x in results]
-    # bundles = [x[3] for x in results]
-    # minpayout = [x[4] for x in results]
-    # targetmargin = [x[5] for x in results]
+    heatmapdata = {"cl_noins": cl_noins.values.tolist(),
+                   "cl_ins": cl_ins.values.tolist(),
+                   "improvement": (cl_ins - cl_noins).values.tolist(),
+                   "columns": cl_ins.columns.tolist(),
+                   "index": cl_ins.index.tolist()}
 
-    return f"{strike}"
+    return jsonify(heatmapdata)

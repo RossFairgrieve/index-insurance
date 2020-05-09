@@ -46,6 +46,9 @@ def updategraphs():
     bundles = request.form.get("bundles")
     targetmargin = request.form.get("targetmargin")
     minpayout = request.form.get("minpayout")
+    kgperperson = int(request.form.get("kgperperson"))
+    interest = float(request.form.get("interest"))
+    deposit = float(request.form.get("deposit"))
 
     strikes = np.linspace(0,6000,13)
     policyid_list = []
@@ -73,9 +76,9 @@ def updategraphs():
         # Calculate critical critloss DF and total_thresh
         crit_thresh_df = helpers.calc_crit(data,
                                            indexyields,
-                                           loandeposit=0.20,
-                                           loaninterest=0.19,
-                                           kg_per_mouth=180)
+                                           loandeposit=deposit,
+                                           loaninterest=interest,
+                                           kg_per_mouth=kgperperson)
 
         cl_noins, cl_ins, clsr, clcr, clfr, premsaspc, realisedmargin = helpers.evaluate(realyields,
                                                          crit_thresh_df,
@@ -100,6 +103,9 @@ def heatmap():
     bundles = request.form.get("bundles")
     targetmargin = request.form.get("targetmargin")
     minpayout = request.form.get("minpayout")
+    kgperperson = int(request.form.get("kgperperson"))
+    interest = float(request.form.get("interest"))
+    deposit = float(request.form.get("deposit"))
 
     res = db.execute(f"""SELECT strike, payouts, premiums FROM policies WHERE strike={clicked_strike} AND minpayout={minpayout} AND bundles={bundles} AND targetmargin={targetmargin} ORDER BY strike""").fetchone()
 
@@ -114,9 +120,9 @@ def heatmap():
     # Calculate critical critloss DF and total_thresh
     crit_thresh_df = helpers.calc_crit(data,
                                        indexyields,
-                                       loandeposit=0.20,
-                                       loaninterest=0.19,
-                                       kg_per_mouth=180)
+                                       loandeposit=deposit,
+                                       loaninterest=interest,
+                                       kg_per_mouth=kgperperson)
 
     cl_noins, cl_ins, clsr, clcr, clfr, premsaspc, realisedmargin = helpers.evaluate(realyields,
                                                      crit_thresh_df,

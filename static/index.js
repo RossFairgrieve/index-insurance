@@ -5,6 +5,9 @@ function drawHeatmap(d) {
   const bundles = document.querySelector('#bundles').value;
   const targetmargin = document.querySelector('#targetmargin').value;
   const minpayout = document.querySelector('#minpayout').value;
+  const kgperperson = document.querySelector('#kgperperson').value;
+  const interest = document.querySelector('#interest').value;
+  const deposit = document.querySelector('#deposit').value;
 
   var strikes = []
   for (var i = 0; i <= 6000; i += 500) {
@@ -71,6 +74,8 @@ function drawHeatmap(d) {
       x: heatmapData['columns'],
       y: heatmapData['index'],
       zmid: 0,
+      zmax: 2700,
+      zmin: -2700,
       colorscale: [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,175,0)']]
     };
 
@@ -86,7 +91,6 @@ function drawHeatmap(d) {
     Plotly.newPlot('heatmap3', data3, layout3);
 
 
-
   };
 
   // Add data to send with request
@@ -95,6 +99,9 @@ function drawHeatmap(d) {
   hdata.append('targetmargin', targetmargin);
   hdata.append('minpayout', minpayout);
   hdata.append('strike', strike);
+  hdata.append('kgperperson', kgperperson);
+  hdata.append('interest', interest);
+  hdata.append('deposit', deposit);
 
   // Send request
   request.send(hdata);
@@ -112,6 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const bundles = document.querySelector('#bundles').value;
         const targetmargin = document.querySelector('#targetmargin').value;
         const minpayout = document.querySelector('#minpayout').value;
+        const kgperperson = document.querySelector('#kgperperson').value;
+        const interest = document.querySelector('#interest').value;
+        const deposit = document.querySelector('#deposit').value;
 
         request.open('POST', '/updategraphs');
 
@@ -151,6 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
         data.append('bundles', bundles);
         data.append('targetmargin', targetmargin);
         data.append('minpayout', minpayout);
+        data.append('kgperperson', kgperperson);
+        data.append('interest', interest);
+        data.append('deposit', deposit);
 
         // Send request
         request.send(data);

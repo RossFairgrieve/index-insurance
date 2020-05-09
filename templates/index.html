@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Currency Converter</title>
+        <title>Smallholder Index Insurance Analyser</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <script src="{{url_for('static', filename='index.js')}}"></script>
@@ -47,6 +47,15 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="maxpayout">Maximum Payout</label>
+                        <select class="form-control" id="maxpayout">
+                            <option value=999999 selected>No maximum</option>
+                            <option value=1000>1000kg/ha equivalent</option>
+                            <option value=2500>2500kg/ha equivalent</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label for="kgperperson">Harvest required per person</label>
                         <select class="form-control" id="kgperperson">
                             <option value=90>90kg</option>
@@ -71,26 +80,33 @@
                         <label for="deposit">Loan deposit</label>
                         <select class="form-control" id="deposit">
                             <option value=0>0%</option>
-                            <option value=0.05>5%</option>
                             <option value=0.1>10%</option>
-                            <option value=0.2 selected>20%</option>
-                            <option value=0.35>35%</option>
+                            <option value=0.25 selected>25%</option>
                             <option value=0.5>50%</option>
                             <option value=1.0>No loan required</option>
                         </select>
                     </div>
 
                     <!-- <input id="bundles" autocomplete="off" autofocus placeholder="Bundles" type="text"> -->
-                    <button type="submit" class="btn btn-primary">Analyse</button>
+                    <button id="form-button" class="btn btn-primary">Analyse</button>
                 </form>
             </div>
         </div>
         <br>
         <div id="result"></div>
-        <div class="row" style="height: 800px;">
-          <div id="heatmap1" class="col-md-4"></div>
-          <div id="heatmap2" class="col-md-4"></div>
-          <div id="heatmap3" class="col-md-4"></div>
+
+        <div class="form-group">
+            <label for="region">Show heatmaps for:</label>
+            <select class="form-control" id="region" onchange="drawHeatmap()">
+                <option value="All">All regions</option>
+                {% for region in regions %}
+                  <option value="{{ region }}">{{ region }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row" style="height: 800px; padding:30px;">
+          <div id="heatmaps" class="col-md-12"></div>
         </div>
 
 

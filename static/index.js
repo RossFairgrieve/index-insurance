@@ -159,12 +159,148 @@ function changePoint(e) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    var pointNumber = 4
+    // Initialize pointNumber to 4
+    pointNumber=4;
+
+    // Create blank scatterplot axes to show initially
+    var layout = {
+      xaxis: {range: [0, 50.1]},
+      yaxis: {range: [0, 100.5]},
+      hovermode: 'closest',
+      showlegend: false
+    };
+    Plotly.newPlot('result', [], layout);
+
+
+
+    // Create blank heatmap axes to show initially
+    const regionBlank = document.querySelector('#region').value;
+
+    const requestBlank = new XMLHttpRequest();
+
+    requestBlank.open('POST', '/blankheatmaps');
+
+    requestBlank.onload = () => {
+      heatmapDataBlank = JSON.parse(requestBlank.responseText);
+
+      // Define and plot heatmaps
+      var trace1 = {
+        z: heatmapDataBlank['zeros'], type: 'heatmap',
+        x: heatmapDataBlank['columns'],
+        y: [heatmapDataBlank['regions'], heatmapDataBlank['sitenames']],
+        xaxis: 'x',
+        yaxis:'y',
+        xgap: 1,
+        ygap: 1,
+        zmax: 0,
+        zmin: -5000,
+        colorscale: 'Hot',
+        showscale: false,
+        hovertemplate:''
+        // colorbar: {x: -0.18}
+      };
+
+      var trace2 = {
+        z: heatmapDataBlank['zeros'], type: 'heatmap',
+        x: heatmapDataBlank['columns'],
+        y: heatmapDataBlank['sitenames'],
+        xaxis: 'x2',
+        yaxis: 'y2',
+        xgap: 1,
+        ygap: 1,
+        zmax: 0,
+        zmin: -5000,
+        colorscale: 'Hot',
+        showscale: false
+      };
+
+      var trace3 = {
+        z: heatmapDataBlank['zeros'], type: 'heatmap',
+        x: heatmapDataBlank['columns'],
+        y: heatmapDataBlank['sitenames'],
+        xaxis: 'x3',
+        yaxis: 'y3',
+        xgap: 1,
+        ygap: 1,
+        // y: heatmapData['index'],
+        zmid: 0,
+        zmax: 2700,
+        zmin: -2700,
+        colorscale: [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,175,0)']],
+        showscale: false
+        // colorbar: {x: 1}
+      };
+
+      var data1 = [trace1, trace2, trace3];
+
+      var layout1 = {
+        grid: {rows: 1, columns: 3, pattern: 'independent'},
+        xaxis: {
+          showline: true,
+          linecolor: '#aaaaaa'
+          // showgrid: false
+        },
+        xaxis2: {
+          showline: true,
+          linecolor: '#aaaaaa',
+          showgrid: false
+        },
+        xaxis3: {
+          showline: true,
+          linecolor: '#aaaaaa'
+          // showgrid: false
+        },
+        yaxis: {
+          type: 'multicategory',
+          showline: true,
+          linecolor: '#cccccc',
+          tickangle: 90,
+          tickson: "boundaries",
+          ticklen: 0,
+          showdividers: true,
+          dividercolor: '#cccccc',
+          dividerwidth: 1,
+          showgrid: false,
+          automargin: true
+        },
+        yaxis2: {
+          showticklabels: false,
+          ticklen: 0,
+          showline: true,
+          linecolor: '#cccccc'
+          // showgrid: false
+        },
+        yaxis3: {
+          showticklabels: false,
+          ticklen: 0,
+          showline: true,
+          linecolor: '#cccccc'
+          // showgrid: false
+        }
+
+      };
+
+      heatmapCl = document.getElementById('heatmaps');
+      Plotly.newPlot('heatmaps', data1, layout1);
+
+    };
+
+    // Add data to send with request
+    const dataBlank = new FormData();
+    dataBlank.append('region', regionBlank);
+
+    // Send request
+    requestBlank.send(dataBlank);
+
+
+
+    // When the form is submitted, plot the scatterplot
     document.querySelector('#form').onsubmit = () => {
 
         // Initialize new request
         const request = new XMLHttpRequest();
 
+        // Gather data from form
         const bundles = document.querySelector('#bundles').value;
         const targetmargin = document.querySelector('#targetmargin').value;
         const minpayout = document.querySelector('#minpayout').value;
@@ -173,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const interest = document.querySelector('#interest').value;
         const deposit = document.querySelector('#deposit').value;
 
+        // Open request to /updategraphs route
         request.open('POST', '/updategraphs');
 
         // Callback function for when request completes
@@ -181,6 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Extract JSON data from request
             graphData = JSON.parse(request.responseText);
 
+            // Define traces and layouts
             var trace1 = {
               x: graphData['premsaspc_list'],
               y: graphData['clsr_list'],
@@ -218,12 +356,11 @@ document.addEventListener('DOMContentLoaded', () => {
               showlegend: false
             };
 
+            // Plot scatterplot with Plotly
             scatterPlot = document.getElementById('result');
             Plotly.newPlot('result', data, layout);
             scatterPlot.on('plotly_click', changePoint);
             scatterPlot.on('plotly_click', drawHeatmap);
-
-
         };
 
         // Add data to send with request
@@ -242,15 +379,3 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 });
-
-// console.log(`result contents ${scatterPlot}`);
-
-
-// scatterPlot.on(plotly_click, function(data){
-//   console.log(data)
-// })
-
-// scatterPlot.on('plotly_click', function(data){
-//   console.log(data.points[0].pointNumber)
-//   console.log(bundles);
-// })

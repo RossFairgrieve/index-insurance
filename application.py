@@ -37,7 +37,10 @@ realyields.columns = years
 
 @app.route("/")
 def index():
-    return render_template("index.html", regions = data['group'].unique())
+    return render_template("index.html",
+                           regions = data['group'].unique()
+
+                           )
 
 @app.route("/updategraphs", methods=["POST"])
 def updategraphs():
@@ -168,3 +171,31 @@ def heatmap():
                    }
 
     return jsonify(heatmapdata)
+
+
+@app.route("/blankheatmaps", methods=["POST"])
+def blankheatmaps():
+    region = request.form.get("region")
+
+    zeros = pd.DataFrame(np.zeros((indexyields.shape[0], indexyields.shape[1])),
+                         index=indexyields.index,
+                         columns=indexyields.columns)
+    zeros = zeros.sort_index(ascending=False)
+
+    if region != "All":
+        zeros = zeros[:][data['group'] == region]
+        regions = [region] * cl_ins.shape[0]
+    else:
+        regions = data['group'].sort_index(ascending=False).tolist()
+
+    sitenames = []
+    for i in range(1, zeros.index.size +1):
+        sitenames.append(" " * i)
+
+    blankheatmapdata = {"zeros": zeros.values.tolist(),
+                   "columns": zeros.columns.tolist(),
+                   "sitenames": sitenames,
+                   "regions": regions
+                   }
+
+    return jsonify(blankheatmapdata)

@@ -33,7 +33,7 @@ function drawHeatmap(d=null) {
     var trace1 = {
       z: heatmapData['cl_noins'], type: 'heatmap',
       x: heatmapData['columns'],
-      y: [heatmapData['regions'], heatmapData['sitenames']],
+      // y: [heatmapData['regions'], heatmapData['sitenames']],
       xaxis: 'x',
       yaxis:'y',
       xgap: 1,
@@ -41,16 +41,16 @@ function drawHeatmap(d=null) {
       zmax: 0,
       zmin: minCl,
       colorscale: 'Hot',
-      showscale: false,
+      // showscale: false,
       text: heatmapData['indexyields'],
-      hovertemplate:'Index-calculated yield: %{text} kg/ha'
-      // colorbar: {x: -0.18}
+      hovertemplate:'Index-calculated yield: %{text} kg/ha',
+      colorbar: {x: -0.135, thickness: 15, tickangle: 270}
     };
 
     var trace2 = {
       z: heatmapData['cl_ins'], type: 'heatmap',
       x: heatmapData['columns'],
-      y: heatmapData['sitenames'],
+      // y: heatmapData['sitenames'],
       xaxis: 'x2',
       yaxis: 'y2',
       xgap: 1,
@@ -64,7 +64,7 @@ function drawHeatmap(d=null) {
     var trace3 = {
       z: heatmapData['improvement'], type: 'heatmap',
       x: heatmapData['columns'],
-      y: heatmapData['sitenames'],
+      // y: heatmapData['sitenames'],
       xaxis: 'x3',
       yaxis: 'y3',
       xgap: 1,
@@ -74,8 +74,8 @@ function drawHeatmap(d=null) {
       zmax: 2700,
       zmin: -2700,
       colorscale: [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,175,0)']],
-      showscale: false
-      // colorbar: {x: 1}
+      // showscale: false,
+      colorbar: {thickness: 15, tickangle: 270}
     };
 
     var data1 = [trace1, trace2, trace3];
@@ -98,15 +98,20 @@ function drawHeatmap(d=null) {
         // showgrid: false
       },
       yaxis: {
-        type: 'multicategory',
+        // type: 'multicategory',
+        title: {
+          text: 'Individual Farms',
+          standoff: 0
+        },
         showline: true,
         linecolor: '#cccccc',
         tickangle: 90,
         tickson: "boundaries",
         ticklen: 0,
-        showdividers: true,
-        dividercolor: '#cccccc',
-        dividerwidth: 1,
+        // showdividers: false,
+        // dividercolor: '#cccccc',
+        // dividerwidth: 1,
+        showticklabels: false,
         showgrid: false,
         automargin: true
       },
@@ -123,6 +128,13 @@ function drawHeatmap(d=null) {
         showline: true,
         linecolor: '#cccccc'
         // showgrid: false
+      },
+      margin: {
+        l: 0,
+        r: 0,
+        b: 30,
+        t: 0,
+        pad: 0
       }
 
       // showlegend: false,
@@ -131,7 +143,7 @@ function drawHeatmap(d=null) {
     };
 
     heatmapCl = document.getElementById('heatmaps');
-    Plotly.newPlot('heatmaps', data1, layout1);
+    Plotly.newPlot('heatmaps', data1, layout1, {displayModeBar: false});
 
   };
 
@@ -167,9 +179,16 @@ document.addEventListener('DOMContentLoaded', () => {
       xaxis: {range: [0, 50.1]},
       yaxis: {range: [0, 100.5]},
       hovermode: 'closest',
-      showlegend: false
+      showlegend: false,
+      margin: {
+        l: 50,
+        r: 50,
+        b: 20,
+        t: 0,
+        pad: 0
+      }
     };
-    Plotly.newPlot('result', [], layout);
+    Plotly.newPlot('scattergraph', [], layout, {displayModeBar: false});
 
 
 
@@ -276,12 +295,19 @@ document.addEventListener('DOMContentLoaded', () => {
           showline: true,
           linecolor: '#cccccc'
           // showgrid: false
+        },
+        margin: {
+          l: 0,
+          r: 0,
+          b: 0,
+          t: 0,
+          pad: 0
         }
 
       };
 
       heatmapCl = document.getElementById('heatmaps');
-      Plotly.newPlot('heatmaps', data1, layout1);
+      Plotly.newPlot('heatmaps', data1, layout1, {displayModeBar: false});
 
     };
 
@@ -353,12 +379,19 @@ document.addEventListener('DOMContentLoaded', () => {
               xaxis: {range: [0, 50.1]},
               yaxis: {range: [0, 100.5]},
               hovermode: 'closest',
-              showlegend: false
+              showlegend: false,
+              margin: {
+                l: 50,
+                r: 35,
+                b: 50,
+                t: 35,
+                pad: 0
+              }
             };
 
             // Plot scatterplot with Plotly
-            scatterPlot = document.getElementById('result');
-            Plotly.newPlot('result', data, layout);
+            scatterPlot = document.getElementById('scattergraph');
+            Plotly.newPlot('scattergraph', data, layout, {displayModeBar: false});
             scatterPlot.on('plotly_click', changePoint);
             scatterPlot.on('plotly_click', drawHeatmap);
         };

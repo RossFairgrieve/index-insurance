@@ -39,7 +39,6 @@ realyields.columns = years
 def index():
     return render_template("index.html",
                            regions = data['group'].unique()
-
                            )
 
 @app.route("/updategraphs", methods=["POST"])

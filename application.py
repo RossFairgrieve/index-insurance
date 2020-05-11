@@ -60,6 +60,7 @@ def updategraphs():
     crit_thresh_list = []
     clsr_list = []
     premsaspc_list = []
+    realisedmargin_list = []
 
     for strike in strikes:
         strike = int(strike)
@@ -93,11 +94,13 @@ def updategraphs():
 
         clsr_list.append(clsr)
         premsaspc_list.append(premsaspc)
+        realisedmargin_list.append(realisedmargin)
 
     datadict = {"strikes": strikes.tolist(),
                 "clsr_list": clsr_list,
                 "premsaspc_list": premsaspc_list,
-                "policyid_list": policyid_list}
+                "policyid_list": policyid_list,
+                "realised_margin": realisedmargin_list}
 
     return jsonify(datadict)
 

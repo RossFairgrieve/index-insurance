@@ -178,7 +178,10 @@ function changePoint(e) {
 }
 
 function scatterInfo(e) {
-
+  document.getElementById('strike').innerHTML = graphData['strikes'][e.points[0].pointNumber].toString() + ' kg/ha';
+  document.getElementById('cls-red').innerHTML = (Math.round(graphData['clsr_list'][e.points[0].pointNumber] * 10) / 10).toFixed(1).toString() + ' %';
+  document.getElementById('prems-as-pc').innerHTML = (Math.round(graphData['premsaspc_list'][e.points[0].pointNumber] * 10) / 10).toFixed(1).toString() + ' %';
+  document.getElementById('real-margin').innerHTML = (Math.round(graphData['realised_margin'][e.points[0].pointNumber] * 10) / 10).toFixed(1).toString() + ' %';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -409,8 +412,9 @@ document.addEventListener('DOMContentLoaded', () => {
             scatterPlot = document.getElementById('scattergraph');
             Plotly.newPlot('scattergraph', data, layout, {displayModeBar: false});
             scatterPlot.on('plotly_click', changePoint);
-            scatterPlot.on('plotly_click', drawHeatmap);
             scatterPlot.on('plotly_click', scatterInfo);
+            scatterPlot.on('plotly_click', drawHeatmap);
+
 
         };
 

@@ -10,7 +10,7 @@ function drawHeatmap(d=null) {
   const kgperperson = document.querySelector('#kgperperson').value;
   const interest = document.querySelector('#interest').value;
   const deposit = document.querySelector('#deposit').value;
-  const region = document.querySelector('#region').value;
+  // const region = document.querySelector('#region').value;
 
   var strikes = []
   for (var i = 0; i <= 6000; i += 500) {
@@ -150,8 +150,9 @@ function drawHeatmap(d=null) {
       // yaxis: {visible: true},
     };
 
-    heatmapCl = document.getElementById('heatmaps');
+    var myHeatmap = document.getElementById('heatmaps');
     Plotly.newPlot('heatmaps', data1, layout1, {displayModeBar: false});
+    myHeatmap.on('plotly_click', heatmapInfo);
 
   };
 
@@ -165,7 +166,7 @@ function drawHeatmap(d=null) {
   hdata.append('kgperperson', kgperperson);
   hdata.append('interest', interest);
   hdata.append('deposit', deposit);
-  hdata.append('region', region);
+  // hdata.append('region', region);
 
   // Send request
   request.send(hdata);
@@ -182,6 +183,26 @@ function scatterInfo(e) {
   document.getElementById('cls-red').innerHTML = (Math.round(graphData['clsr_list'][e.points[0].pointNumber] * 10) / 10).toFixed(1).toString() + ' %';
   document.getElementById('prems-as-pc').innerHTML = (Math.round(graphData['premsaspc_list'][e.points[0].pointNumber] * 10) / 10).toFixed(1).toString() + ' %';
   document.getElementById('real-margin').innerHTML = (Math.round(graphData['realised_margin'][e.points[0].pointNumber] * 10) / 10).toFixed(1).toString() + ' %';
+}
+
+function heatmapInfo(e) {
+  document.getElementById('site-year').innerHTML = heatmapData['sitenames'][e.points[0].pointNumber[0]] + ' - ' + heatmapData['columns'][e.points[0].pointNumber[1]];
+  document.getElementById('index-yield').innerHTML = heatmapData['indexyields'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]].toString() + ' kg/ha';
+  document.getElementById('real-yield').innerHTML = heatmapData['realyields'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]].toString() + ' kg/ha';
+  document.getElementById('crit-loss-noins').innerHTML = -(Math.round(heatmapData['cl_noins'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]])).toString() + ' kg';
+  document.getElementById('crit-loss-ins').innerHTML = -(Math.round(heatmapData['cl_ins'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]])).toString() + ' kg';
+  var sign = '';
+  var startHtml = ''
+  var endHtml = ''
+  if (heatmapData['improvement'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]] > 0) {
+    sign = '+';
+    startHtml = '<span style="color: green">';
+    endHtml = '</span>';
+  } else if (heatmapData['improvement'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]] < 0) {
+    startHtml = '<span style="color: red">';
+    endHtml = '</span>';
+  }
+  document.getElementById('improvement').innerHTML = startHtml + sign + (Math.round(heatmapData['improvement'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]]).toString()) + ' kg' + endHtml;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -210,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Create blank heatmap axes to show initially
-    const regionBlank = document.querySelector('#region').value;
 
     const requestBlank = new XMLHttpRequest();
 
@@ -341,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add data to send with request
     const dataBlank = new FormData();
-    dataBlank.append('region', regionBlank);
+    // dataBlank.append('region', regionBlank);
 
     // Send request
     requestBlank.send(dataBlank);

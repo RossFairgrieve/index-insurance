@@ -34,6 +34,9 @@ years = [x[-4:] for x in indexyields.columns]
 indexyields.columns = years
 realyields.columns = years
 
+# Set startyear for insurance
+startyear = "1990"
+
 
 @app.route("/")
 def index():
@@ -90,7 +93,7 @@ def updategraphs():
                                                          payouts,
                                                          premiums,
                                                          data['farmarea'],
-                                                         startyear='1990')
+                                                         startyear=startyear)
 
         clsr_list.append(clsr)
         premsaspc_list.append(premsaspc)
@@ -116,7 +119,7 @@ def heatmap():
     interest = float(request.form.get("interest"))
     deposit = float(request.form.get("deposit"))
 
-    region = request.form.get("region")
+    # region = request.form.get("region")
 
     res = db.execute(f"""SELECT strike, payouts, premiums FROM policies WHERE strike={clicked_strike} AND minpayout={minpayout} AND maxpayout={maxpayout} AND bundles={bundles} AND targetmargin={targetmargin} ORDER BY strike""").fetchone()
 
@@ -140,27 +143,26 @@ def heatmap():
                                                      payouts,
                                                      premiums,
                                                      data['farmarea'],
-                                                     startyear='1990')
+                                                     startyear=startyear)
 
-    min_cl = cl_noins.min().min()
+    # min_cl = cl_noins.min().min()
 
     cl_ins = cl_ins.sort_index(ascending=False)
     cl_noins = cl_noins.sort_index(ascending=False)
-    indexyieldstosend = indexyields.sort_index(ascending=False)
+    indexyieldstosend = indexyields.loc[:,startyear:].sort_index(ascending=False)
+    realyieldstosend = realyields.loc[:,startyear:].sort_index(ascending=False)
 
-    if region != "All":
-        cl_noins = cl_noins[:][data['group'] == region]
-        cl_ins = cl_ins[:][data['group'] == region]
-        indexyieldstosend = indexyieldstosend[:][data['group'] == region]
-        regions = [region] * cl_ins.shape[0]
-    else:
-        regions = data['group'].sort_index(ascending=False).tolist()
+    # if region != "All":
+    #     cl_noins = cl_noins[:][data['group'] == region]
+    #     cl_ins = cl_ins[:][data['group'] == region]
+    #     indexyieldstosend = indexyieldstosend[:][data['group'] == region]
+    #     regions = [region] * cl_ins.shape[0]
+    # else:
+    regions = data['group'].sort_index(ascending=False).tolist()
 
     improvement =  (cl_ins - cl_noins)
 
-    sitenames = []
-    for i in range(1, cl_ins.index.size +1):
-        sitenames.append(" " * i)
+    sitenames = [f"Farm {x}" for x in indexyieldstosend.index]
 
     heatmapdata = {"cl_noins": cl_noins.values.tolist(),
                    "cl_ins": cl_ins.values.tolist(),
@@ -168,8 +170,9 @@ def heatmap():
                    "columns": cl_ins.columns.tolist(),
                    "sitenames": sitenames,
                    "regions": regions,
-                   "min_cl": min_cl,
-                   "indexyields": indexyieldstosend.values.tolist()
+                   # "min_cl": min_cl,
+                   "indexyields": indexyieldstosend.values.tolist(),
+                   "realyields": realyieldstosend.values.tolist()
                    }
 
     return jsonify(heatmapdata)
@@ -177,27 +180,23 @@ def heatmap():
 
 @app.route("/blankheatmaps", methods=["POST"])
 def blankheatmaps():
-    region = request.form.get("region")
+    # region = request.form.get("region")
 
     zeros = pd.DataFrame(np.zeros((indexyields.shape[0], indexyields.shape[1])),
                          index=indexyields.index,
                          columns=indexyields.columns)
     zeros = zeros.sort_index(ascending=False)
 
-    if region != "All":
-        zeros = zeros[:][data['group'] == region]
-        regions = [region] * cl_ins.shape[0]
-    else:
-        regions = data['group'].sort_index(ascending=False).tolist()
+    # if region != "All":
+    #     zeros = zeros[:][data['group'] == region]
+    #     regions = [region] * cl_ins.shape[0]
+    # else:
 
-    sitenames = []
-    for i in range(1, zeros.index.size +1):
-        sitenames.append(" " * i)
+    sitenames = [f"Farm {x}" for x in indexyields].reverse()
 
     blankheatmapdata = {"zeros": zeros.values.tolist(),
                    "columns": zeros.columns.tolist(),
-                   "sitenames": sitenames,
-                   "regions": regions
+                   "sitenames": sitenames
                    }
 
     return jsonify(blankheatmapdata)

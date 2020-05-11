@@ -98,17 +98,6 @@
               </select>
             </div>
 
-            <div class="form-group my-form-group">
-                <label for="region" class="small-label">Show results for <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-                <select class="form-control-sm" id="region" onchange="drawHeatmap()">
-                    <option value="All">All regions</option>
-                    {% for region in regions %}
-                      <option value="{{ region }}">{{ region }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-              <!-- <input id="bundles" autocomplete="off" autofocus placeholder="Bundles" type="text"> -->
             <button id="form-button" class="btn my-btn">Analyse</button>
           </form>
         </div>
@@ -148,8 +137,8 @@
           </div>
           <div class="col-sm-2 full-height graph-info" id="heatmapsinfo">
             <h6>Individual farms & years</h6>
-            <div class="info-label">Region:</div>
-            <div class="info-field" id="info-region"></div>
+            <div class="info-label">Site and Year:</div>
+            <div class="info-field" id="site-year"></div>
             <div class="info-label">Index estimated yield</div>
             <div class="info-field" id="index-yield"></div>
             <div class="info-label">Actual yield</div>

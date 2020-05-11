@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="{{url_for('static', filename='index.js')}}"></script>
+  <script src="https://kit.fontawesome.com/62ed686c9c.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -14,23 +15,25 @@
     <div class="row full-height">
       <div class="col-sm-2 full-height" id="sidebar">
         <div class="row" id="app-info">
-          App info here
+          <h3>APP NAME</h3>
+          <p>by Ross Fairgrieve</p>
+          <p>info@rossfairgrieve.com</p>
         </div>
+        <div class="row" id="side-form">
+          <form id="form" class="trans-bg">
 
-        <div class="row" id="top-form">
-          <form id="form">
-            <div class="form-group">
-              <label for="bundles">Premium grouping</label>
+            <div class="form-group my-form-group">
+              <label for="bundles" class="small-label">Premium grouping <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
               <select class="form-control-sm" id="bundles">
-                <option value=0 selected>No grouping of premiums</option>
-                <option value=3>9 groups</option>
-                <option value=2>4 groups</option>
+                <option value=0 selected>None</option>
+                <option value=3>9 statistical groups</option>
+                <option value=2>4 statistical groups</option>
                 <option value=1>Flat rate</option>
               </select>
             </div>
 
-            <div class="form-group">
-              <label for="targetmargin">Insurer target margin</label>
+            <div class="form-group my-form-group">
+              <label for="targetmargin" class="small-label">Insurer target margin <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
               <select class="form-control-sm" id="targetmargin">
                 <option value=0>No margin</option>
                 <option value=0.05>5%</option>
@@ -44,27 +47,27 @@
               </select>
             </div>
 
-            <div class="form-group">
-              <label for="minpayout">Minimum Payout</label>
+            <div class="form-group my-form-group">
+              <label for="minpayout" class="small-label">Minimum Payout <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
               <select class="form-control-sm" id="minpayout">
                 <option value=0 selected>No minimum</option>
-                <option value=500>500kg/ha equivalent</option>
-                <option value=1000>1000kg/ha equivalent</option>
-                <option value=2000>2000kg/ha equivalent</option>
+                <option value=500>500kg/ha equiv.</option>
+                <option value=1000>1000kg/ha equiv.</option>
+                <option value=2000>2000kg/ha equiv.</option>
               </select>
             </div>
 
-            <div class="form-group">
-              <label for="maxpayout">Maximum Payout</label>
+            <div class="form-group my-form-group">
+              <label for="maxpayout" class="small-label">Maximum Payout <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
               <select class="form-control-sm" id="maxpayout">
                 <option value=999999 selected>No maximum</option>
-                <option value=1000>1000kg/ha equivalent</option>
-                <option value=2500>2500kg/ha equivalent</option>
+                <option value=1000>1000kg/ha equiv.</option>
+                <option value=2500>2500kg/ha equiv.</option>
               </select>
             </div>
 
-            <div class="form-group">
-              <label for="kgperperson">Harvest required per person</label>
+            <div class="form-group my-form-group">
+              <label for="kgperperson" class="small-label">Min crop per person <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
               <select class="form-control-sm" id="kgperperson">
                 <option value=90>90kg</option>
                 <option value=180 selected>180kg</option>
@@ -72,8 +75,8 @@
               </select>
             </div>
 
-            <div class="form-group">
-              <label for="interest">Loan interest rate</label>
+            <div class="form-group my-form-group">
+              <label for="interest" class="small-label">Loan interest rate <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
               <select class="form-control-sm" id="interest">
                 <option value=0>Interest-free (0%)</option>
                 <option value=0.05>5%</option>
@@ -84,8 +87,8 @@
               </select>
             </div>
 
-            <div class="form-group">
-              <label for="deposit">Loan deposit</label>
+            <div class="form-group my-form-group">
+              <label for="deposit" class="small-label">Loan deposit <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
               <select class="form-control-sm" id="deposit">
                 <option value=0>0%</option>
                 <option value=0.1>10%</option>
@@ -95,47 +98,38 @@
               </select>
             </div>
 
+            <div class="form-group my-form-group">
+                <label for="region" class="small-label">Show results for <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
+                <select class="form-control-sm" id="region" onchange="drawHeatmap()">
+                    <option value="All">All regions</option>
+                    {% for region in regions %}
+                      <option value="{{ region }}">{{ region }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
               <!-- <input id="bundles" autocomplete="off" autofocus placeholder="Bundles" type="text"> -->
-            <button id="form-button" class="btn btn-primary">Analyse</button>
+            <button id="form-button" class="btn my-btn">Analyse</button>
           </form>
         </div>
-
-
-
-
-        <div class="row" id="bottom-form">
-          <div class="form-group">
-              <label for="region">Show heatmaps for:</label>
-              <select class="form-control-sm" id="region" onchange="drawHeatmap()">
-                  <option value="All">All regions</option>
-                  {% for region in regions %}
-                    <option value="{{ region }}">{{ region }}</option>
-                  {% endfor %}
-              </select>
-          </div>
-        </div>
-
-
-
-
 
 
       </div>
       <div class="col-sm-10 full-height" id="right-content">
         <div class="row" id="scatter-row">
-          <div class="col-sm-8 full-height" id="scattergraph">
+          <div class="col-sm-10 full-height" id="scattergraph">
             <!-- Scatterplot goes here -->
           </div>
-          <div class="col-sm-4 full-height" id="scatterinfo">
-            Scatter info goes here
+          <div class="col-sm-2 full-height right-rect" id="scatterinfo">
+            <p style="font-size:12px; text-transform:uppercase; font-weight:bold;">Scatter info goes here</p>
           </div>
         </div>
         <div class="row" id="heatmaps-row">
-          <div class="col-sm-8 full-height" id="heatmaps">
+          <div class="col-sm-10 full-height" id="heatmaps">
             <!-- Heatmaps go here -->
           </div>
-          <div class="col-sm-4 full-height" id="heatmapsinfo">
-            Heatmaps info goes here
+          <div class="col-sm-2 full-height right-rect" id="heatmapsinfo">
+            <p style="font-size:12px; text-transform:uppercase; font-weight:bold;">Heatmaps info goes here</p>
           </div>
         </div>
       </div>

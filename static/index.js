@@ -44,7 +44,7 @@ function drawHeatmap(d=null) {
       // showscale: false,
       text: heatmapData['indexyields'],
       hovertemplate:'Index-calculated yield: %{text} kg/ha',
-      colorbar: {x: -0.135, thickness: 15, tickangle: 270}
+      colorbar: {x: -0.12, thickness: 15, tickangle: 270}
     };
 
     var trace2 = {
@@ -84,18 +84,19 @@ function drawHeatmap(d=null) {
       grid: {rows: 1, columns: 3, pattern: 'independent'},
       xaxis: {
         showline: true,
-        linecolor: '#aaaaaa'
+        linecolor: '#999999',
+        mirror: true
         // showgrid: false
       },
       xaxis2: {
         showline: true,
-        linecolor: '#aaaaaa',
-        showgrid: false
+        linecolor: '#999999',
+        mirror: true
       },
       xaxis3: {
         showline: true,
-        linecolor: '#aaaaaa'
-        // showgrid: false
+        linecolor: '#999999',
+        mirror: true
       },
       yaxis: {
         // type: 'multicategory',
@@ -104,7 +105,8 @@ function drawHeatmap(d=null) {
           standoff: 0
         },
         showline: true,
-        linecolor: '#cccccc',
+        linecolor: '#999999',
+        mirror: true,
         tickangle: 90,
         tickson: "boundaries",
         ticklen: 0,
@@ -119,23 +121,27 @@ function drawHeatmap(d=null) {
         showticklabels: false,
         ticklen: 0,
         showline: true,
-        linecolor: '#cccccc'
+        linecolor: '#999999',
+        mirror: true
         // showgrid: false
       },
       yaxis3: {
         showticklabels: false,
         ticklen: 0,
         showline: true,
-        linecolor: '#cccccc'
+        llinecolor: '#999999',
+        mirror: true
         // showgrid: false
       },
       margin: {
-        l: 0,
-        r: 0,
-        b: 30,
-        t: 0,
+        l: 1,
+        r: 1,
+        b: 25,
+        t: 10,
         pad: 0
-      }
+      },
+      plot_bgcolor:'rgb(255, 255, 255)',
+      paper_bgcolor:'transparent'
 
       // showlegend: false,
       // xaxis: {visible: true},
@@ -182,11 +188,13 @@ document.addEventListener('DOMContentLoaded', () => {
       showlegend: false,
       margin: {
         l: 50,
-        r: 50,
-        b: 20,
-        t: 0,
+        r: 35,
+        b: 50,
+        t: 35,
         pad: 0
-      }
+      },
+      plot_bgcolor:'rgba(255, 255, 255, 0.90)',
+      paper_bgcolor:'transparent'
     };
     Plotly.newPlot('scattergraph', [], layout, {displayModeBar: false});
 
@@ -206,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
       var trace1 = {
         z: heatmapDataBlank['zeros'], type: 'heatmap',
         x: heatmapDataBlank['columns'],
-        y: [heatmapDataBlank['regions'], heatmapDataBlank['sitenames']],
+        // y: [heatmapDataBlank['regions'], heatmapDataBlank['sitenames']],
         xaxis: 'x',
         yaxis:'y',
         xgap: 1,
@@ -214,15 +222,15 @@ document.addEventListener('DOMContentLoaded', () => {
         zmax: 0,
         zmin: -5000,
         colorscale: 'Hot',
-        showscale: false,
-        hovertemplate:''
+        hovertemplate:'',
+        colorbar: {x: -0.12, thickness: 15, tickangle: 270}
         // colorbar: {x: -0.18}
       };
 
       var trace2 = {
         z: heatmapDataBlank['zeros'], type: 'heatmap',
         x: heatmapDataBlank['columns'],
-        y: heatmapDataBlank['sitenames'],
+        // y: heatmapDataBlank['sitenames'],
         xaxis: 'x2',
         yaxis: 'y2',
         xgap: 1,
@@ -236,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
       var trace3 = {
         z: heatmapDataBlank['zeros'], type: 'heatmap',
         x: heatmapDataBlank['columns'],
-        y: heatmapDataBlank['sitenames'],
+        // y: heatmapDataBlank['sitenames'],
         xaxis: 'x3',
         yaxis: 'y3',
         xgap: 1,
@@ -246,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         zmax: 2700,
         zmin: -2700,
         colorscale: [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,175,0)']],
-        showscale: false
+        colorbar: {thickness: 15, tickangle: 270}
         // colorbar: {x: 1}
       };
 
@@ -256,53 +264,63 @@ document.addEventListener('DOMContentLoaded', () => {
         grid: {rows: 1, columns: 3, pattern: 'independent'},
         xaxis: {
           showline: true,
-          linecolor: '#aaaaaa'
+          linecolor: '#999999',
+          mirror: true
           // showgrid: false
         },
         xaxis2: {
           showline: true,
-          linecolor: '#aaaaaa',
+          linecolor: '#999999',
+          mirror: true,
           showgrid: false
         },
         xaxis3: {
           showline: true,
-          linecolor: '#aaaaaa'
+          linecolor: '#999999',
+          mirror: true,
           // showgrid: false
         },
         yaxis: {
-          type: 'multicategory',
           showline: true,
-          linecolor: '#cccccc',
-          tickangle: 90,
+          linecolor: '#999999',
+          // linewidth: 2,
+          mirror: true,
           tickson: "boundaries",
           ticklen: 0,
-          showdividers: true,
-          dividercolor: '#cccccc',
-          dividerwidth: 1,
+          showticklabels: false,
           showgrid: false,
-          automargin: true
+          automargin: true,
+          title: {
+            text: 'Individual Farms',
+            standoff: 0
+          }
+
         },
         yaxis2: {
           showticklabels: false,
           ticklen: 0,
           showline: true,
-          linecolor: '#cccccc'
+          linecolor: '#999999',
+          mirror: true
           // showgrid: false
         },
         yaxis3: {
           showticklabels: false,
           ticklen: 0,
           showline: true,
-          linecolor: '#cccccc'
+          linecolor: '#999999',
+          mirror: true
           // showgrid: false
         },
         margin: {
-          l: 0,
-          r: 0,
-          b: 0,
-          t: 0,
+          l: 1,
+          r: 1,
+          b: 25,
+          t: 10,
           pad: 0
-        }
+        },
+        plot_bgcolor:'rgb(255, 255, 255)',
+        paper_bgcolor:'transparent'
 
       };
 
@@ -349,31 +367,20 @@ document.addEventListener('DOMContentLoaded', () => {
               x: graphData['premsaspc_list'],
               y: graphData['clsr_list'],
               // text: pointText,
-              mode: 'markers', // could use 'lines+markers'
+              mode: 'lines+markers', // could use 'lines+markers'
               marker: {
                 size: 15,
                 opacity: 0.9,
-                color: '#1776a6'
+                // color: '#ff6e40'
+                color:'#224d73'
               },
               text: graphData['strikes'],
               hovertemplate:'<b>Strike Level:</b> %{text}kg/ha<extra></extra>',
               hoverinfo: '',
-              line: {shape: 'spline', smoothing: 1.0}
+              line: {shape: 'spline', smoothing: 1.1}
             };
 
-            var trace2 = {
-              x: graphData['premsaspc_list'],
-              y: graphData['clsr_list'],
-              // text: pointText,
-              mode: 'lines', // could use 'lines+markers'
-              marker: {
-                color: '#66aed1'
-              },
-              hoverinfo: '',
-              line: {shape: 'spline', smoothing: 1.0}
-            };
-
-            var data = [trace2, trace1];
+            var data = [trace1];
 
             var layout = {
               xaxis: {range: [0, 50.1]},
@@ -386,7 +393,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 b: 50,
                 t: 35,
                 pad: 0
-              }
+              },
+              plot_bgcolor:"rgba(255, 255, 255, 0.90)",
+              paper_bgcolor:'transparent'
             };
 
             // Plot scatterplot with Plotly

@@ -1,0 +1,110 @@
+.screen-height {
+  height: 100vh;
+}
+
+body {
+  background-image: url("maize10.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.container-fluid {
+  background-color: rgba(255,255,255, 0.6);
+}
+
+.full-height {
+  height: 100%;
+}
+
+#sidebar {
+  border: 1px solid #CCC;
+  background-color: #1e3d59;
+}
+
+#right-content {
+
+}
+
+#app-info {
+  display: none !important;
+  height: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: : center;
+  text-align: center;
+}
+
+#form-holder {
+}
+
+#scatter-row {
+  height: 40%;
+}
+
+#heatmaps-row {
+  height: 60%;
+}
+
+#scatter-row {
+  border-bottom: 1px solid #CCC;
+}
+
+#scattergraph {
+  padding: 0;
+  background-color: rgba('255,255,255,0.8');
+}
+
+#scatterinfo {
+
+}
+
+#heatmaps {
+  padding: 0;
+  background-color: rgba('255,255,255,0.8');
+}
+
+#heatmapsinfo {
+}
+
+#side-form {
+  height: 85%;
+  padding: 10%;
+  border-top: 1px solid #CCC;
+}
+
+.full-width {
+  width: 100%;
+}
+
+select {
+  width: 100%;
+}
+
+.small-label {
+  margin-bottom: 0px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+}
+
+.form-group.my-form-group {
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.btn.my-btn {
+  background-color:#ffc13b;
+  margin-top: 1rem;
+}
+
+.fas {
+  color: #ffc13b;
+  font-size: 14px;
+}
+
+#scatterinfo, #heatmapsinfo {
+  background-color: #ffc13b;
+  color: #1e3d59;
+}

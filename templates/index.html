@@ -8,6 +8,7 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="{{url_for('static', filename='index.js')}}"></script>
   <script src="https://kit.fontawesome.com/62ed686c9c.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -15,9 +16,8 @@
     <div class="row full-height">
       <div class="col-sm-2 full-height" id="sidebar">
         <div class="row" id="app-info">
-          <h3>APP NAME</h3>
-          <p>by Ross Fairgrieve</p>
-          <p>info@rossfairgrieve.com</p>
+          <img src="../static/media/logo.png" class="logo row">
+          <a class="my-email row" href="mailto:info&#64;rossfairgrieve.com">info&#64;rossfairgrieve.com</a>
         </div>
         <div class="row" id="side-form">
           <form id="form" class="trans-bg">
@@ -120,16 +120,46 @@
           <div class="col-sm-10 full-height" id="scattergraph">
             <!-- Scatterplot goes here -->
           </div>
-          <div class="col-sm-2 full-height right-rect" id="scatterinfo">
-            <p style="font-size:12px; text-transform:uppercase; font-weight:bold;">Scatter info goes here</p>
+          <div class="col-sm-2 full-height graph-info" id="scatterinfo">
+            <h6>Policy Performance</h6>
+            <div class="info-label">Strike level</div>
+            <div class="info-field" id="strike"></div>
+            <div class="info-label">Reduction in crit. shortfall</div>
+            <div class="info-field" id="cls-red"></div>
+            <div class="info-label">Mean ins. cost as % of harvest</div>
+            <div class="info-field" id="prems-as-pc"></div>
+            <div class="info-label">Realised insurer margin</div>
+            <div class="info-field" id="real-margin"></div>
           </div>
         </div>
         <div class="row" id="heatmaps-row">
-          <div class="col-sm-10 full-height" id="heatmaps">
+          <div class="col-sm-10">
+            <div class="row full-height">
+              <div class="col-sm-1 cbar-container">
+                <img src="../static/media/loss-colorbar.png" class="colorbar colorbar-left">
+              </div>
+              <div class="col-sm-10" id="heatmaps">
+              </div>
+              <div class="col-sm-1 cbar-container">
+                <img src="../static/media/improvement-colorbar.png" class="colorbar colorbar-right">
+              </div>
+            </div>
             <!-- Heatmaps go here -->
           </div>
-          <div class="col-sm-2 full-height right-rect" id="heatmapsinfo">
-            <p style="font-size:12px; text-transform:uppercase; font-weight:bold;">Heatmaps info goes here</p>
+          <div class="col-sm-2 full-height graph-info" id="heatmapsinfo">
+            <h6>Individual farms & years</h6>
+            <div class="info-label">Region:</div>
+            <div class="info-field" id="info-region"></div>
+            <div class="info-label">Index estimated yield</div>
+            <div class="info-field" id="index-yield"></div>
+            <div class="info-label">Actual yield</div>
+            <div class="info-field" id="real-yield"></div>
+            <div class="info-label">Crit. shortfall - no ins.</div>
+            <div class="info-field" id="crit-loss-noins"></div>
+            <div class="info-label">Crit. shortfall - with ins.</div>
+            <div class="info-field" id="crit-loss-ins"></div>
+            <div class="info-label">Change with ins.</div>
+            <div class="info-field" id="improvement"></div>
           </div>
         </div>
       </div>

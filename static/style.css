@@ -1,3 +1,14 @@
+h1, h2, h3, h4, h5, h6, p, a {
+  font-family: 'Lato', sans-serif;
+}
+
+.graph-info>h6 {
+  text-transform: uppercase;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 .screen-height {
   height: 100vh;
 }
@@ -12,27 +23,38 @@ body {
   background-color: rgba(255,255,255, 0.6);
 }
 
+.logo {
+  height: 75%;
+}
+
+.my-email {
+  font-size: 0.6rem;
+  font-weight: lighter;
+  text-transform: uppercase;
+  color: #EEEEEE;
+  margin-top: 5px;
+}
+
+.my-email:hover {
+  color: #ffc13b;
+  text-decoration: none;
+}
+
 .full-height {
   height: 100%;
 }
 
 #sidebar {
-  border: 1px solid #CCC;
+
   background-color: #1e3d59;
 }
 
-#right-content {
-
-}
-
 #app-info {
-  display: none !important;
   height: 15%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: : center;
-  text-align: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 #form-holder {
@@ -47,16 +69,12 @@ body {
 }
 
 #scatter-row {
-  border-bottom: 1px solid #CCC;
+
 }
 
 #scattergraph {
   padding: 0;
   background-color: rgba('255,255,255,0.8');
-}
-
-#scatterinfo {
-
 }
 
 #heatmaps {
@@ -69,8 +87,8 @@ body {
 
 #side-form {
   height: 85%;
-  padding: 10%;
-  border-top: 1px solid #CCC;
+  padding: 5% 10% 5% 10%;
+
 }
 
 .full-width {
@@ -107,4 +125,51 @@ select {
 #scatterinfo, #heatmapsinfo {
   background-color: #ffc13b;
   color: #1e3d59;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#scatterinfo {
+  padding-top: 20px;
+}
+
+#heatmapsinfo {
+  padding-top: 10px
+}
+
+.red-bg {
+  background-color: red;
+}
+
+.colorbar {
+  object-fit: contain;
+  max-height: 55vh;
+}
+
+.cbar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  line-height: 12px;
+}
+
+.info-field {
+  background-color: white;
+  border: 1px solid #DDDDDD;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 5%;
+}
+
+#scatterinfo .info-field {
+  height: 8%;
+}
+
+#heatmapsinfo .info-field{
+  height: 5.33%;
 }

@@ -39,12 +39,13 @@ function drawHeatmap(d=null) {
       xgap: 1,
       ygap: 1,
       zmax: 0,
-      zmin: minCl,
+      zmin: -4000,
+      // zmin: minCl,
       colorscale: 'Hot',
-      // showscale: false,
-      text: heatmapData['indexyields'],
-      hovertemplate:'Index-calculated yield: %{text} kg/ha',
-      colorbar: {x: -0.12, thickness: 15, tickangle: 270}
+      showscale: false
+      // text: heatmapData['indexyields'],
+      // hovertemplate:'Index-calculated yield: %{text} kg/ha',
+      // colorbar: {x: -0.11, thickness: 25, tickangle: 270, tickfont: {size: 18}}
     };
 
     var trace2 = {
@@ -56,7 +57,7 @@ function drawHeatmap(d=null) {
       xgap: 1,
       ygap: 1,
       zmax: 0,
-      zmin: minCl,
+      zmin: -4000,
       colorscale: 'Hot',
       showscale: false
     };
@@ -71,11 +72,12 @@ function drawHeatmap(d=null) {
       ygap: 1,
       // y: heatmapData['index'],
       zmid: 0,
-      zmax: 2700,
-      zmin: -2700,
-      colorscale: [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,175,0)']],
+      zmax: 3500,
+      zmin: -3500,
+      showscale: false,
+      colorscale: [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,170,0)']]
       // showscale: false,
-      colorbar: {thickness: 15, tickangle: 270}
+      // colorbar: {thickness: 25, tickangle: 270, tickfont: {size: 18}}
     };
 
     var data1 = [trace1, trace2, trace3];
@@ -100,10 +102,10 @@ function drawHeatmap(d=null) {
       },
       yaxis: {
         // type: 'multicategory',
-        title: {
-          text: 'Individual Farms',
-          standoff: 0
-        },
+        // title: {
+        //   text: 'Individual Farms',
+        //   standoff: 0
+        // },
         showline: true,
         linecolor: '#999999',
         mirror: true,
@@ -175,6 +177,10 @@ function changePoint(e) {
   pointNumber = e.points[0].pointNumber
 }
 
+function scatterInfo(e) {
+
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize pointNumber to 4
@@ -187,10 +193,10 @@ document.addEventListener('DOMContentLoaded', () => {
       hovermode: 'closest',
       showlegend: false,
       margin: {
-        l: 50,
-        r: 35,
+        l: 100,
+        r: 100,
         b: 50,
-        t: 35,
+        t: 50,
         pad: 0
       },
       plot_bgcolor:'rgba(255, 255, 255, 0.90)',
@@ -220,11 +226,11 @@ document.addEventListener('DOMContentLoaded', () => {
         xgap: 1,
         ygap: 1,
         zmax: 0,
-        zmin: -5000,
+        zmin: -4000,
         colorscale: 'Hot',
         hovertemplate:'',
-        colorbar: {x: -0.12, thickness: 15, tickangle: 270}
-        // colorbar: {x: -0.18}
+        // colorbar: {x: -0.11, thickness: 25, tickangle: 270, tickfont: {size: 18}}
+        showscale: false
       };
 
       var trace2 = {
@@ -236,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         xgap: 1,
         ygap: 1,
         zmax: 0,
-        zmin: -5000,
+        zmin: -4000,
         colorscale: 'Hot',
         showscale: false
       };
@@ -251,10 +257,11 @@ document.addEventListener('DOMContentLoaded', () => {
         ygap: 1,
         // y: heatmapData['index'],
         zmid: 0,
-        zmax: 2700,
-        zmin: -2700,
-        colorscale: [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,175,0)']],
-        colorbar: {thickness: 15, tickangle: 270}
+        zmax: 3500,
+        zmin: -3500,
+        showscale: false,
+        colorscale: [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,170,0)']]
+        // colorbar: {thickness: 25, tickangle: 270, tickfont: {size: 18}}
         // colorbar: {x: 1}
       };
 
@@ -289,11 +296,11 @@ document.addEventListener('DOMContentLoaded', () => {
           ticklen: 0,
           showticklabels: false,
           showgrid: false,
-          automargin: true,
-          title: {
-            text: 'Individual Farms',
-            standoff: 0
-          }
+          automargin: true
+          // title: {
+          //   text: 'Individual Farms',
+          //   standoff: 0
+          // }
 
         },
         yaxis2: {
@@ -388,10 +395,10 @@ document.addEventListener('DOMContentLoaded', () => {
               hovermode: 'closest',
               showlegend: false,
               margin: {
-                l: 50,
-                r: 35,
+                l: 100,
+                r: 100,
                 b: 50,
-                t: 35,
+                t: 50,
                 pad: 0
               },
               plot_bgcolor:"rgba(255, 255, 255, 0.90)",
@@ -403,6 +410,8 @@ document.addEventListener('DOMContentLoaded', () => {
             Plotly.newPlot('scattergraph', data, layout, {displayModeBar: false});
             scatterPlot.on('plotly_click', changePoint);
             scatterPlot.on('plotly_click', drawHeatmap);
+            scatterPlot.on('plotly_click', scatterInfo);
+
         };
 
         // Add data to send with request

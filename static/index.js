@@ -1,3 +1,6 @@
+// Initialize pointNumber to null
+var pointNumber = null;
+
 // Define base trace for scatterplots
 var traceScatBlank = {
   mode: 'lines+markers', // could use 'lines+markers'
@@ -131,6 +134,9 @@ var layoutHeatmapBase = {
 
 
 function drawHeatmap(d=null) {
+
+  pointNumber = d.points[0].pointNumber
+
   const request = new XMLHttpRequest();
 
   const bundles = document.querySelector('#bundles').value;
@@ -146,11 +152,7 @@ function drawHeatmap(d=null) {
     strikes.push(i);
   }
 
-  if (d == null) {
-    var strike = strikes[pointNumber];
-  } else {
-    var strike = strikes[d.points[0].pointNumber];
-  }
+  var strike = strikes[pointNumber];
 
   request.open('POST', '/heatmap');
   request.onload = function() {
@@ -186,8 +188,8 @@ function drawHeatmap(d=null) {
     document.getElementById('heatmap1').on('plotly_click', heatmapInfo);
     document.getElementById('heatmap2').on('plotly_click', heatmapInfo);
     document.getElementById('heatmap3').on('plotly_click', heatmapInfo);
+  }
 
-  };
 
   // Add data to send with request
   const hdata = new FormData();
@@ -205,7 +207,7 @@ function drawHeatmap(d=null) {
   request.send(hdata);
   return false;
 
-}
+};
 
 
 // -------------------------------------
@@ -213,6 +215,28 @@ function drawHeatmap(d=null) {
 
 function changePoint(e) {
   pointNumber = e.points[0].pointNumber
+}
+
+
+// -------------------------------------
+
+
+function changeColor(e) {
+  var colors = [];
+  var update = {'marker':{color: colors, size: 15}};
+
+  // Create array of colors that is yellow for the clicked point
+  // and blue for everything else
+  for (var i = 0; i < graphData['strikes'].length; i++) {
+    if (i == e.points[0].pointNumber) {
+      colors.push('#ffc13b');
+    } else {
+      colors.push('#224d73');
+    }
+  }
+
+  // Update graph with array of colors
+  Plotly.restyle('scattergraph', update);
 }
 
 
@@ -255,9 +279,6 @@ function heatmapInfo(e) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-
-    // Initialize pointNumber to 4
-    pointNumber=4;
 
     Plotly.newPlot('scattergraph', [], layoutScat, {displayModeBar: false});
 
@@ -335,8 +356,15 @@ document.addEventListener('DOMContentLoaded', () => {
             Plotly.newPlot('scattergraph', [traceScat], layoutScat, {displayModeBar: false});
             scatterPlot = document.getElementById('scattergraph');
             scatterPlot.on('plotly_click', changePoint);
+            scatterPlot.on('plotly_click', changeColor);
             scatterPlot.on('plotly_click', scatterInfo);
             scatterPlot.on('plotly_click', drawHeatmap);
+
+            if (pointNumber != null) {
+              pointDict = {'points':[{pointNumber: pointNumber}]};
+              drawHeatmap(pointDict);
+              changeColor(pointDict);
+            }
 
 
         };

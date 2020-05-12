@@ -23,12 +23,12 @@
           <form id="form" class="trans-bg">
 
             <div class="form-group my-form-group">
-              <label for="bundles" class="small-label">Premium grouping <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
+              <label for="bundles" class="small-label">Risk Aggregation <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
               <select class="form-control-sm" id="bundles">
                 <option value=0 selected>None</option>
-                <option value=3>9 statistical groups</option>
-                <option value=2>4 statistical groups</option>
-                <option value=1>Flat rate</option>
+                <option value=3>Nine groups</option>
+                <option value=2>Four groups</option>
+                <option value=1>One group (flat rate)</option>
               </select>
             </div>
 
@@ -36,11 +36,8 @@
               <label for="targetmargin" class="small-label">Insurer target margin <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
               <select class="form-control-sm" id="targetmargin">
                 <option value=0>No margin</option>
-                <option value=0.05>5%</option>
                 <option value=0.1>10%</option>
-                <option value=0.15>15%</option>
-                <option value=0.2>20%</option>
-                <option value=0.25 selected>25%</option>
+                <option value=0.2 selected>20%</option>
                 <option value=0.3>30%</option>
                 <option value=0.4>40%</option>
                 <option value=0.5>50%</option>
@@ -50,8 +47,8 @@
             <div class="form-group my-form-group">
               <label for="minpayout" class="small-label">Minimum Payout <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
               <select class="form-control-sm" id="minpayout">
-                <option value=0 selected>No minimum</option>
-                <option value=500>500kg/ha equiv.</option>
+                <option value=0>No minimum</option>
+                <option value=500 selected>500kg/ha equiv.</option>
                 <option value=1000>1000kg/ha equiv.</option>
                 <option value=2000>2000kg/ha equiv.</option>
               </select>
@@ -123,14 +120,15 @@
         </div>
         <div class="row" id="heatmaps-row">
           <div class="col-sm-10">
-            <div class="row full-height">
-              <div class="col-sm-1 cbar-container">
-                <img src="../static/media/loss-colorbar.png" class="colorbar colorbar-left">
+            <div class="row full-height" id="heatmaps-container">
+              <div class="col-sm-4" id="heatmap1">
+                <!-- Heatmap with no ins goes here -->
               </div>
-              <div class="col-sm-10" id="heatmaps">
+              <div class="col-sm-4" id="heatmap2">
+                <!-- Heatmap with ins goes here -->
               </div>
-              <div class="col-sm-1 cbar-container">
-                <img src="../static/media/improvement-colorbar.png" class="colorbar colorbar-right">
+              <div class="col-sm-4" id="heatmap3">
+                <!-- Heatmap of improvement goes here -->
               </div>
             </div>
             <!-- Heatmaps go here -->

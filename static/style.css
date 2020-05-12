@@ -20,7 +20,7 @@ body {
 }
 
 .container-fluid {
-  background-color: rgba(255,255,255, 0.6);
+  background-color: rgba(255,255,255, 0.7);
 }
 
 .logo {
@@ -177,4 +177,8 @@ select {
 
 #heatmapsinfo .info-field{
   height: 5.33%;
+}
+
+#heatmaps-container {
+  padding-right: 30px;
 }

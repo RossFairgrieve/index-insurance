@@ -182,9 +182,9 @@ def heatmap():
 def blankheatmaps():
     # region = request.form.get("region")
 
-    zeros = pd.DataFrame(np.zeros((indexyields.shape[0], indexyields.shape[1])),
-                         index=indexyields.index,
-                         columns=indexyields.columns)
+    zeros = pd.DataFrame(np.zeros((indexyields.loc[:,startyear:].shape[0], indexyields.loc[:,startyear:].shape[1])),
+                         index=indexyields.loc[:,startyear:].index,
+                         columns=indexyields.loc[:,startyear:].columns)
     zeros = zeros.sort_index(ascending=False)
 
     # if region != "All":

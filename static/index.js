@@ -1,3 +1,133 @@
+// Define base trace for scatterplots
+var traceScatBlank = {
+  mode: 'lines+markers', // could use 'lines+markers'
+  marker: {
+    size: 15,
+    opacity: 0.9,
+    // color: '#ff6e40'
+    color:'#224d73'
+  },
+  hovertemplate:'<b>Strike Level:</b> %{text}kg/ha<extra></extra>',
+  hoverinfo: '',
+  line: {shape: 'spline', smoothing: 1.3}
+};
+
+
+// Define layout for scatterplots
+var layoutScat = {
+  title: {
+    text: '<span style="font-weight: bold; text-transform: uppercase;">Overall insurance performance<br>at various strike levels</span>',
+    font: {
+      size: 14,
+      color: '#000000'
+    },
+    y: 0.94
+  },
+  xaxis: {
+    range: [0, 50.1],
+    title: {
+      text: '<span style="font-weight: bold;">Mean insurance cost as % of harvest value</span>',
+      font: {
+        size: 12,
+        color: '#000000'
+      },
+      standoff: 0
+    }
+  },
+  yaxis: {
+    range: [0, 100.5],
+    title: {
+      text: '<span style="font-weight: bold;">Reduction in total<br>critical shortfall (%)</span>',
+      font: {
+        size: 12,
+        color: '#000000'
+      },
+      standoff: 0
+    }
+  },
+  hovermode: 'closest',
+  showlegend: false,
+  margin: {
+    l: 100,
+    r: 100,
+    b: 50,
+    t: 50,
+    pad: 0
+  },
+  plot_bgcolor:'rgba(255, 255, 255, 0.90)',
+  paper_bgcolor:'transparent'
+};
+
+// -------------------------------------
+
+
+// Declare base traces and layouts for heatmaps
+var traceHeatmapBase = {
+  type: 'heatmap',
+  xaxis: 'x',
+  yaxis:'y',
+  xgap: 1,
+  ygap: 1,
+  zmax: 0,
+  zmin: -4000,
+  colorscale: 'Hot',
+  hovertemplate:'',
+  colorbar: {
+    thickness: 15,
+    tickangle: 270,
+    tickfont: {
+      size: 12
+    }
+  }
+};
+
+var layoutHeatmapBase = {
+  xaxis: {
+    showline: true,
+    linecolor: '#999999',
+    mirror: true,
+    title: {
+      text: '<b>Year</b>',
+      standoff: 0
+    }
+  },
+
+  yaxis: {
+    showline: true,
+    linecolor: '#999999',
+    // linewidth: 2,
+    mirror: true,
+    // tickson: 'boundaries',
+    tickmode: 'linear',
+    tick0: 0,
+    dtik: 1,
+    ticklen: 2,
+    showticklabels: false,
+    showgrid: false,
+    title: {
+      text: '<b>Individual farms</b>'
+    }
+  },
+
+  margin: {
+    l: 25,
+    r: 25,
+    b: 50,
+    t: 50,
+    pad: 0,
+  },
+  plot_bgcolor:'rgb(255, 255, 255)',
+  paper_bgcolor:'transparent',
+  title: {
+    // text: '<b>Critical shortfall<br>No insurance (kg)</b>',
+    font: {
+      size: 14
+    },
+  }
+};
+
+
+// -------------------------------------
 
 
 function drawHeatmap(d=null) {
@@ -10,7 +140,6 @@ function drawHeatmap(d=null) {
   const kgperperson = document.querySelector('#kgperperson').value;
   const interest = document.querySelector('#interest').value;
   const deposit = document.querySelector('#deposit').value;
-  // const region = document.querySelector('#region').value;
 
   var strikes = []
   for (var i = 0; i <= 6000; i += 500) {
@@ -18,7 +147,7 @@ function drawHeatmap(d=null) {
   }
 
   if (d == null) {
-    var strike = strikes[pointNumber]
+    var strike = strikes[pointNumber];
   } else {
     var strike = strikes[d.points[0].pointNumber];
   }
@@ -27,132 +156,36 @@ function drawHeatmap(d=null) {
   request.onload = function() {
     heatmapData = JSON.parse(request.responseText);
 
-    minCl = heatmapData['min_cl']
+    var traceCritNoins = JSON.parse(JSON.stringify(traceHeatmapBase));
+    traceCritNoins.z = heatmapData['cl_noins'];
+    traceCritNoins.x = heatmapData['columns'];
+    traceCritNoins.y = heatmapData['sitenames'];
 
-    // Define and plot heatmaps
-    var trace1 = {
-      z: heatmapData['cl_noins'], type: 'heatmap',
-      x: heatmapData['columns'],
-      // y: [heatmapData['regions'], heatmapData['sitenames']],
-      xaxis: 'x',
-      yaxis:'y',
-      xgap: 1,
-      ygap: 1,
-      zmax: 0,
-      zmin: -4000,
-      // zmin: minCl,
-      colorscale: 'Hot',
-      showscale: false
-      // text: heatmapData['indexyields'],
-      // hovertemplate:'Index-calculated yield: %{text} kg/ha',
-      // colorbar: {x: -0.11, thickness: 25, tickangle: 270, tickfont: {size: 18}}
-    };
+    var traceCritIns = JSON.parse(JSON.stringify(traceCritNoins));
+    traceCritIns.z = heatmapData['cl_ins'];
 
-    var trace2 = {
-      z: heatmapData['cl_ins'], type: 'heatmap',
-      x: heatmapData['columns'],
-      // y: heatmapData['sitenames'],
-      xaxis: 'x2',
-      yaxis: 'y2',
-      xgap: 1,
-      ygap: 1,
-      zmax: 0,
-      zmin: -4000,
-      colorscale: 'Hot',
-      showscale: false
-    };
+    var traceImp = JSON.parse(JSON.stringify(traceCritNoins));
+    traceImp.z = heatmapData['improvement'];
+    traceImp.colorscale = [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,170,0)']];
+    traceImp.zmax = 3500;
+    traceImp.zmid = 0;
+    traceImp.zmin = -3500;
 
-    var trace3 = {
-      z: heatmapData['improvement'], type: 'heatmap',
-      x: heatmapData['columns'],
-      // y: heatmapData['sitenames'],
-      xaxis: 'x3',
-      yaxis: 'y3',
-      xgap: 1,
-      ygap: 1,
-      // y: heatmapData['index'],
-      zmid: 0,
-      zmax: 3500,
-      zmin: -3500,
-      showscale: false,
-      colorscale: [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,170,0)']]
-      // showscale: false,
-      // colorbar: {thickness: 25, tickangle: 270, tickfont: {size: 18}}
-    };
+    var layoutNoins = JSON.parse(JSON.stringify(layoutHeatmapBase));
+    var layoutIns = JSON.parse(JSON.stringify(layoutHeatmapBase));
+    var layoutImp = JSON.parse(JSON.stringify(layoutHeatmapBase));
 
-    var data1 = [trace1, trace2, trace3];
+    layoutNoins.title.text = '<b>Critical shortfall<br>No insurance (kg)</b>';
+    layoutIns.title.text = '<b>Critical shortfall<br>With insurance (kg)</b>';
+    layoutImp.title.text = '<b>Change with<br>insurance (kg)</b>';
 
-    var layout1 = {
-      grid: {rows: 1, columns: 3, pattern: 'independent'},
-      xaxis: {
-        showline: true,
-        linecolor: '#999999',
-        mirror: true
-        // showgrid: false
-      },
-      xaxis2: {
-        showline: true,
-        linecolor: '#999999',
-        mirror: true
-      },
-      xaxis3: {
-        showline: true,
-        linecolor: '#999999',
-        mirror: true
-      },
-      yaxis: {
-        // type: 'multicategory',
-        // title: {
-        //   text: 'Individual Farms',
-        //   standoff: 0
-        // },
-        showline: true,
-        linecolor: '#999999',
-        mirror: true,
-        tickangle: 90,
-        tickson: "boundaries",
-        ticklen: 0,
-        // showdividers: false,
-        // dividercolor: '#cccccc',
-        // dividerwidth: 1,
-        showticklabels: false,
-        showgrid: false,
-        automargin: true
-      },
-      yaxis2: {
-        showticklabels: false,
-        ticklen: 0,
-        showline: true,
-        linecolor: '#999999',
-        mirror: true
-        // showgrid: false
-      },
-      yaxis3: {
-        showticklabels: false,
-        ticklen: 0,
-        showline: true,
-        llinecolor: '#999999',
-        mirror: true
-        // showgrid: false
-      },
-      margin: {
-        l: 1,
-        r: 1,
-        b: 25,
-        t: 10,
-        pad: 0
-      },
-      plot_bgcolor:'rgb(255, 255, 255)',
-      paper_bgcolor:'transparent'
+    Plotly.newPlot('heatmap1', [traceCritNoins], layoutNoins, {displayModeBar: false});
+    Plotly.newPlot('heatmap2', [traceCritIns], layoutIns, {displayModeBar: false});
+    Plotly.newPlot('heatmap3', [traceImp], layoutImp, {displayModeBar: false});
 
-      // showlegend: false,
-      // xaxis: {visible: true},
-      // yaxis: {visible: true},
-    };
-
-    var myHeatmap = document.getElementById('heatmaps');
-    Plotly.newPlot('heatmaps', data1, layout1, {displayModeBar: false});
-    myHeatmap.on('plotly_click', heatmapInfo);
+    document.getElementById('heatmap1').on('plotly_click', heatmapInfo);
+    document.getElementById('heatmap2').on('plotly_click', heatmapInfo);
+    document.getElementById('heatmap3').on('plotly_click', heatmapInfo);
 
   };
 
@@ -174,9 +207,17 @@ function drawHeatmap(d=null) {
 
 }
 
+
+// -------------------------------------
+
+
 function changePoint(e) {
   pointNumber = e.points[0].pointNumber
 }
+
+
+// -------------------------------------
+
 
 function scatterInfo(e) {
   document.getElementById('strike').innerHTML = graphData['strikes'][e.points[0].pointNumber].toString() + ' kg/ha';
@@ -184,6 +225,10 @@ function scatterInfo(e) {
   document.getElementById('prems-as-pc').innerHTML = (Math.round(graphData['premsaspc_list'][e.points[0].pointNumber] * 10) / 10).toFixed(1).toString() + ' %';
   document.getElementById('real-margin').innerHTML = (Math.round(graphData['realised_margin'][e.points[0].pointNumber] * 10) / 10).toFixed(1).toString() + ' %';
 }
+
+
+// -------------------------------------
+
 
 function heatmapInfo(e) {
   document.getElementById('site-year').innerHTML = heatmapData['sitenames'][e.points[0].pointNumber[0]] + ' - ' + heatmapData['columns'][e.points[0].pointNumber[1]];
@@ -205,33 +250,18 @@ function heatmapInfo(e) {
   document.getElementById('improvement').innerHTML = startHtml + sign + (Math.round(heatmapData['improvement'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]]).toString()) + ' kg' + endHtml;
 }
 
+
+// -------------------------------------
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize pointNumber to 4
     pointNumber=4;
 
-    // Create blank scatterplot axes to show initially
-    var layout = {
-      xaxis: {range: [0, 50.1]},
-      yaxis: {range: [0, 100.5]},
-      hovermode: 'closest',
-      showlegend: false,
-      margin: {
-        l: 100,
-        r: 100,
-        b: 50,
-        t: 50,
-        pad: 0
-      },
-      plot_bgcolor:'rgba(255, 255, 255, 0.90)',
-      paper_bgcolor:'transparent'
-    };
-    Plotly.newPlot('scattergraph', [], layout, {displayModeBar: false});
-
-
+    Plotly.newPlot('scattergraph', [], layoutScat, {displayModeBar: false});
 
     // Create blank heatmap axes to show initially
-
     const requestBlank = new XMLHttpRequest();
 
     requestBlank.open('POST', '/blankheatmaps');
@@ -239,129 +269,32 @@ document.addEventListener('DOMContentLoaded', () => {
     requestBlank.onload = () => {
       heatmapDataBlank = JSON.parse(requestBlank.responseText);
 
-      // Define and plot heatmaps
-      var trace1 = {
-        z: heatmapDataBlank['zeros'], type: 'heatmap',
-        x: heatmapDataBlank['columns'],
-        // y: [heatmapDataBlank['regions'], heatmapDataBlank['sitenames']],
-        xaxis: 'x',
-        yaxis:'y',
-        xgap: 1,
-        ygap: 1,
-        zmax: 0,
-        zmin: -4000,
-        colorscale: 'Hot',
-        hovertemplate:'',
-        // colorbar: {x: -0.11, thickness: 25, tickangle: 270, tickfont: {size: 18}}
-        showscale: false
-      };
+      // Define and plot blank heatmaps with correct layout
+      var traceCritBlank = JSON.parse(JSON.stringify(traceHeatmapBase));
+      traceCritBlank.z = heatmapDataBlank['zeros'];
+      traceCritBlank.x = heatmapDataBlank['columns'];
 
-      var trace2 = {
-        z: heatmapDataBlank['zeros'], type: 'heatmap',
-        x: heatmapDataBlank['columns'],
-        // y: heatmapDataBlank['sitenames'],
-        xaxis: 'x2',
-        yaxis: 'y2',
-        xgap: 1,
-        ygap: 1,
-        zmax: 0,
-        zmin: -4000,
-        colorscale: 'Hot',
-        showscale: false
-      };
+      var traceImpBlank = JSON.parse(JSON.stringify(traceCritBlank));
+      traceImpBlank.colorscale = [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,170,0)']];
+      traceImpBlank.zmax = 3500;
+      traceImpBlank.zmid = 0;
+      traceImpBlank.zmin = -3500;
 
-      var trace3 = {
-        z: heatmapDataBlank['zeros'], type: 'heatmap',
-        x: heatmapDataBlank['columns'],
-        // y: heatmapDataBlank['sitenames'],
-        xaxis: 'x3',
-        yaxis: 'y3',
-        xgap: 1,
-        ygap: 1,
-        // y: heatmapData['index'],
-        zmid: 0,
-        zmax: 3500,
-        zmin: -3500,
-        showscale: false,
-        colorscale: [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,170,0)']]
-        // colorbar: {thickness: 25, tickangle: 270, tickfont: {size: 18}}
-        // colorbar: {x: 1}
-      };
+      var layout1 = JSON.parse(JSON.stringify(layoutHeatmapBase));
+      var layout2 = JSON.parse(JSON.stringify(layoutHeatmapBase));
+      var layout3 = JSON.parse(JSON.stringify(layoutHeatmapBase));
 
-      var data1 = [trace1, trace2, trace3];
+      layout1.title.text = '<b>Critical shortfall<br>No insurance (kg)</b>'
+      layout2.title.text = '<b>Critical shortfall<br>With insurance (kg)</b>'
+      layout3.title.text = '<b>Change with<br>insurance (kg)</b>'
 
-      var layout1 = {
-        grid: {rows: 1, columns: 3, pattern: 'independent'},
-        xaxis: {
-          showline: true,
-          linecolor: '#999999',
-          mirror: true
-          // showgrid: false
-        },
-        xaxis2: {
-          showline: true,
-          linecolor: '#999999',
-          mirror: true,
-          showgrid: false
-        },
-        xaxis3: {
-          showline: true,
-          linecolor: '#999999',
-          mirror: true,
-          // showgrid: false
-        },
-        yaxis: {
-          showline: true,
-          linecolor: '#999999',
-          // linewidth: 2,
-          mirror: true,
-          tickson: "boundaries",
-          ticklen: 0,
-          showticklabels: false,
-          showgrid: false,
-          automargin: true
-          // title: {
-          //   text: 'Individual Farms',
-          //   standoff: 0
-          // }
-
-        },
-        yaxis2: {
-          showticklabels: false,
-          ticklen: 0,
-          showline: true,
-          linecolor: '#999999',
-          mirror: true
-          // showgrid: false
-        },
-        yaxis3: {
-          showticklabels: false,
-          ticklen: 0,
-          showline: true,
-          linecolor: '#999999',
-          mirror: true
-          // showgrid: false
-        },
-        margin: {
-          l: 1,
-          r: 1,
-          b: 25,
-          t: 10,
-          pad: 0
-        },
-        plot_bgcolor:'rgb(255, 255, 255)',
-        paper_bgcolor:'transparent'
-
-      };
-
-      heatmapCl = document.getElementById('heatmaps');
-      Plotly.newPlot('heatmaps', data1, layout1, {displayModeBar: false});
-
+      Plotly.newPlot('heatmap1', [traceCritBlank], layout1, {displayModeBar: false});
+      Plotly.newPlot('heatmap2', [traceCritBlank], layout2, {displayModeBar: false});
+      Plotly.newPlot('heatmap3', [traceImpBlank], layout3, {displayModeBar: false});
     };
 
     // Add data to send with request
     const dataBlank = new FormData();
-    // dataBlank.append('region', regionBlank);
 
     // Send request
     requestBlank.send(dataBlank);
@@ -393,44 +326,14 @@ document.addEventListener('DOMContentLoaded', () => {
             graphData = JSON.parse(request.responseText);
 
             // Define traces and layouts
-            var trace1 = {
-              x: graphData['premsaspc_list'],
-              y: graphData['clsr_list'],
-              // text: pointText,
-              mode: 'lines+markers', // could use 'lines+markers'
-              marker: {
-                size: 15,
-                opacity: 0.9,
-                // color: '#ff6e40'
-                color:'#224d73'
-              },
-              text: graphData['strikes'],
-              hovertemplate:'<b>Strike Level:</b> %{text}kg/ha<extra></extra>',
-              hoverinfo: '',
-              line: {shape: 'spline', smoothing: 1.1}
-            };
-
-            var data = [trace1];
-
-            var layout = {
-              xaxis: {range: [0, 50.1]},
-              yaxis: {range: [0, 100.5]},
-              hovermode: 'closest',
-              showlegend: false,
-              margin: {
-                l: 100,
-                r: 100,
-                b: 50,
-                t: 50,
-                pad: 0
-              },
-              plot_bgcolor:"rgba(255, 255, 255, 0.90)",
-              paper_bgcolor:'transparent'
-            };
+            var traceScat= JSON.parse(JSON.stringify(traceScatBlank));
+            traceScat.x = graphData['premsaspc_list'];
+            traceScat.y = graphData['clsr_list'];
+            traceScat.text = graphData['strikes'];
 
             // Plot scatterplot with Plotly
+            Plotly.newPlot('scattergraph', [traceScat], layoutScat, {displayModeBar: false});
             scatterPlot = document.getElementById('scattergraph');
-            Plotly.newPlot('scattergraph', data, layout, {displayModeBar: false});
             scatterPlot.on('plotly_click', changePoint);
             scatterPlot.on('plotly_click', scatterInfo);
             scatterPlot.on('plotly_click', drawHeatmap);

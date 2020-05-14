@@ -1,5 +1,6 @@
-// Initialize pointNumber to null
+// Initialize clicked scatter point and heatmap cell to null
 var pointNumber = null;
+var cellNumber = null;
 
 // Define base trace for scatterplots
 var traceScatBlank = {
@@ -72,7 +73,7 @@ var traceHeatmapBase = {
   xgap: 1,
   ygap: 1,
   zmax: 0,
-  zmin: -4000,
+  zmin: -3700,
   colorscale: 'Hot',
   hovertemplate:'',
   colorbar: {
@@ -86,6 +87,7 @@ var traceHeatmapBase = {
 
 var layoutHeatmapBase = {
   xaxis: {
+    // type: 'category',
     showline: true,
     linecolor: '#999999',
     mirror: true,
@@ -96,6 +98,7 @@ var layoutHeatmapBase = {
   },
 
   yaxis: {
+    // type: 'category',
     showline: true,
     linecolor: '#999999',
     // linewidth: 2,
@@ -126,6 +129,7 @@ var layoutHeatmapBase = {
     font: {
       size: 14
     },
+    x: 0.45
   }
 };
 
@@ -135,78 +139,93 @@ var layoutHeatmapBase = {
 
 function drawHeatmap(d=null) {
 
-  pointNumber = d.points[0].pointNumber
+  if (d != null) {
 
-  const request = new XMLHttpRequest();
+    pointNumber = d.points[0].pointNumber
 
-  const bundles = document.querySelector('#bundles').value;
-  const targetmargin = document.querySelector('#targetmargin').value;
-  const minpayout = document.querySelector('#minpayout').value;
-  const maxpayout = document.querySelector('#maxpayout').value;
-  const kgperperson = document.querySelector('#kgperperson').value;
-  const interest = document.querySelector('#interest').value;
-  const deposit = document.querySelector('#deposit').value;
+    const request = new XMLHttpRequest();
 
-  var strikes = []
-  for (var i = 0; i <= 6000; i += 500) {
-    strikes.push(i);
-  }
+    const bundles = document.querySelector('#bundles').value;
+    const targetmargin = document.querySelector('#targetmargin').value;
+    const minpayout = document.querySelector('#minpayout').value;
+    const maxpayout = document.querySelector('#maxpayout').value;
+    const kgperperson = document.querySelector('#kgperperson').value;
+    const interest = document.querySelector('#interest').value;
+    const deposit = document.querySelector('#deposit').value;
 
-  var strike = strikes[pointNumber];
+    var strikes = []
+    for (var i = 0; i <= 6000; i += 500) {
+      strikes.push(i);
+    }
 
-  request.open('POST', '/heatmap');
-  request.onload = function() {
-    heatmapData = JSON.parse(request.responseText);
+    var strike = strikes[pointNumber];
 
-    var traceCritNoins = JSON.parse(JSON.stringify(traceHeatmapBase));
-    traceCritNoins.z = heatmapData['cl_noins'];
-    traceCritNoins.x = heatmapData['columns'];
-    traceCritNoins.y = heatmapData['sitenames'];
+    request.open('POST', '/heatmap');
+    request.onload = function() {
+      heatmapData = JSON.parse(request.responseText);
 
-    var traceCritIns = JSON.parse(JSON.stringify(traceCritNoins));
-    traceCritIns.z = heatmapData['cl_ins'];
+      var traceCritNoins = JSON.parse(JSON.stringify(traceHeatmapBase));
+      traceCritNoins.z = heatmapData['cl_noins'];
+      traceCritNoins.x = heatmapData['columns'];
+      traceCritNoins.y = heatmapData['sitenames'];
 
-    var traceImp = JSON.parse(JSON.stringify(traceCritNoins));
-    traceImp.z = heatmapData['improvement'];
-    traceImp.colorscale = [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,170,0)']];
-    traceImp.zmax = 3500;
-    traceImp.zmid = 0;
-    traceImp.zmin = -3500;
+      var traceCritIns = JSON.parse(JSON.stringify(traceCritNoins));
+      traceCritIns.z = heatmapData['cl_ins'];
 
-    var layoutNoins = JSON.parse(JSON.stringify(layoutHeatmapBase));
-    var layoutIns = JSON.parse(JSON.stringify(layoutHeatmapBase));
-    var layoutImp = JSON.parse(JSON.stringify(layoutHeatmapBase));
+      var traceImp = JSON.parse(JSON.stringify(traceCritNoins));
+      traceImp.z = heatmapData['improvement'];
+      traceImp.colorscale = [['0.0', 'rgb(150,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,150,0)']];
+      traceImp.zmax = 3200;
+      traceImp.zmid = 0;
+      traceImp.zmin = -3200;
 
-    layoutNoins.title.text = '<b>Critical shortfall<br>No insurance (kg)</b>';
-    layoutIns.title.text = '<b>Critical shortfall<br>With insurance (kg)</b>';
-    layoutImp.title.text = '<b>Change with<br>insurance (kg)</b>';
+      var layoutNoins = JSON.parse(JSON.stringify(layoutHeatmapBase));
+      var layoutIns = JSON.parse(JSON.stringify(layoutHeatmapBase));
+      var layoutImp = JSON.parse(JSON.stringify(layoutHeatmapBase));
 
-    Plotly.newPlot('heatmap1', [traceCritNoins], layoutNoins, {displayModeBar: false});
-    Plotly.newPlot('heatmap2', [traceCritIns], layoutIns, {displayModeBar: false});
-    Plotly.newPlot('heatmap3', [traceImp], layoutImp, {displayModeBar: false});
+      layoutNoins.title.text = '<b>Critical shortfall<br>No insurance (kg)</b>';
+      layoutIns.title.text = '<b>Critical shortfall<br>With insurance (kg)</b>';
+      layoutImp.title.text = '<b>Change with<br>insurance (kg)</b>';
 
-    document.getElementById('heatmap1').on('plotly_click', heatmapInfo);
-    document.getElementById('heatmap2').on('plotly_click', heatmapInfo);
-    document.getElementById('heatmap3').on('plotly_click', heatmapInfo);
-  }
+      Plotly.newPlot('heatmap1', [traceCritNoins], layoutNoins, {displayModeBar: false});
+      Plotly.newPlot('heatmap2', [traceCritIns], layoutIns, {displayModeBar: false});
+      Plotly.newPlot('heatmap3', [traceImp], layoutImp, {displayModeBar: false});
+
+      document.getElementById('heatmap1').on('plotly_click', changeCell);
+      // document.getElementById('heatmap1').on('plotly_click', annotateHeatmaps);
+      document.getElementById('heatmap1').on('plotly_click', heatmapInfo);
+
+      document.getElementById('heatmap2').on('plotly_click', changeCell);
+      document.getElementById('heatmap2').on('plotly_click', heatmapInfo);
+
+      document.getElementById('heatmap3').on('plotly_click', changeCell);
+      document.getElementById('heatmap3').on('plotly_click', heatmapInfo);
+
+      if (cellNumber != null) {
+        cellDict = {'points':[{pointNumber: [cellNumber[0], cellNumber[1]]}]};
+        // console.log(`About to update heatmap info for cell ${cellNumber}`)
+        heatmapInfo(cellDict);
+      }
+
+    }
 
 
-  // Add data to send with request
-  const hdata = new FormData();
-  hdata.append('bundles', bundles);
-  hdata.append('targetmargin', targetmargin);
-  hdata.append('minpayout', minpayout);
-  hdata.append('maxpayout', maxpayout);
-  hdata.append('strike', strike);
-  hdata.append('kgperperson', kgperperson);
-  hdata.append('interest', interest);
-  hdata.append('deposit', deposit);
-  // hdata.append('region', region);
+    // Add data to send with request
+    const hdata = new FormData();
+    hdata.append('bundles', bundles);
+    hdata.append('targetmargin', targetmargin);
+    hdata.append('minpayout', minpayout);
+    hdata.append('maxpayout', maxpayout);
+    hdata.append('strike', strike);
+    hdata.append('kgperperson', kgperperson);
+    hdata.append('interest', interest);
+    hdata.append('deposit', deposit);
+    // hdata.append('region', region);
 
-  // Send request
-  request.send(hdata);
-  return false;
-
+    // Send request
+    request.send(hdata);
+    return false;
+  };
 };
 
 
@@ -221,22 +240,65 @@ function changePoint(e) {
 // -------------------------------------
 
 
+function changeCell(e) {
+  cellNumber = [e.points[0].pointNumber[0], e.points[0].pointNumber[1]]
+}
+
+
+// -------------------------------------
+
 function changeColor(e) {
-  var colors = [];
-  var update = {'marker':{color: colors, size: 15}};
+  if (e != null) {
 
-  // Create array of colors that is yellow for the clicked point
-  // and blue for everything else
-  for (var i = 0; i < graphData['strikes'].length; i++) {
-    if (i == e.points[0].pointNumber) {
-      colors.push('#ffc13b');
-    } else {
-      colors.push('#224d73');
+    var colors = [];
+    var update = {'marker':{color: colors, size: 15}};
+
+    // Create array of colors that is yellow for the clicked point
+    // and blue for everything else
+    for (var i = 0; i < graphData['strikes'].length; i++) {
+      if (i == e.points[0].pointNumber) {
+        colors.push('#ffc13b');
+      } else {
+        colors.push('#224d73');
+      }
     }
-  }
 
-  // Update graph with array of colors
-  Plotly.restyle('scattergraph', update);
+    // Update graph with array of colors
+    Plotly.restyle('scattergraph', update);
+  }
+}
+
+
+// -------------------------------------
+
+
+function annotateHeatmaps(e) {
+  if (e != null) {
+
+    console.log("Running annotateHeatmaps")
+    var colors = [];
+    var update = {'annotations': []};
+
+    // Update graph with array of colors
+    Plotly.relayout('heatmap1', update);
+
+    update = {
+      annotations: [{
+        text: '',
+        x: e.points[0].pointNumber[1],
+        y: e.points[0].pointNumber[0],
+        xref: 'x',
+        yref: 'y',
+        bgcolor: 'rgba(0,0,255,1)',
+        width: 5,
+        height: 3,
+        showarrow: false
+      }]
+    }
+
+    Plotly.relayout('heatmap1', update);
+
+  }
 }
 
 
@@ -255,24 +317,30 @@ function scatterInfo(e) {
 
 
 function heatmapInfo(e) {
-  document.getElementById('site-year').innerHTML = heatmapData['sitenames'][e.points[0].pointNumber[0]] + ' - ' + heatmapData['columns'][e.points[0].pointNumber[1]];
-  document.getElementById('index-yield').innerHTML = heatmapData['indexyields'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]].toString() + ' kg/ha';
-  document.getElementById('real-yield').innerHTML = heatmapData['realyields'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]].toString() + ' kg/ha';
-  document.getElementById('crit-loss-noins').innerHTML = -(Math.round(heatmapData['cl_noins'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]])).toString() + ' kg';
-  document.getElementById('crit-loss-ins').innerHTML = -(Math.round(heatmapData['cl_ins'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]])).toString() + ' kg';
-  var sign = '';
-  var startHtml = ''
-  var endHtml = ''
-  if (heatmapData['improvement'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]] > 0) {
-    sign = '+';
-    startHtml = '<span style="color: green">';
-    endHtml = '</span>';
-  } else if (heatmapData['improvement'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]] < 0) {
-    startHtml = '<span style="color: red">';
-    endHtml = '</span>';
-  }
-  document.getElementById('improvement').innerHTML = startHtml + sign + (Math.round(heatmapData['improvement'][e.points[0].pointNumber[0]][e.points[0].pointNumber[1]]).toString()) + ' kg' + endHtml;
-}
+
+  if (e != null) {
+
+    cellNumber = [e.points[0].pointNumber[0], e.points[0].pointNumber[1]];
+
+    document.getElementById('site-year').innerHTML = heatmapData['sitenames'][e.points[0].pointNumber[0]] + ' - ' + heatmapData['columns'][e.points[0].pointNumber[1]];
+    document.getElementById('index-yield').innerHTML = heatmapData['indexyields'][cellNumber[0]][cellNumber[1]].toString() + ' kg/ha';
+    document.getElementById('real-yield').innerHTML = heatmapData['realyields'][cellNumber[0]][cellNumber[1]].toString() + ' kg/ha';
+    document.getElementById('crit-loss-noins').innerHTML = -(Math.round(heatmapData['cl_noins'][cellNumber[0]][cellNumber[1]])).toString() + ' kg';
+    document.getElementById('crit-loss-ins').innerHTML = -(Math.round(heatmapData['cl_ins'][cellNumber[0]][cellNumber[1]])).toString() + ' kg';
+    var sign = '';
+    var startHtml = '';
+    var endHtml = '';
+    if (heatmapData['improvement'][cellNumber[0]][cellNumber[1]] > 0) {
+      sign = '+';
+      startHtml = '<span style="color: green">';
+      endHtml = '</span>';
+    } else if (heatmapData['improvement'][cellNumber[0]][cellNumber[1]] < 0) {
+      startHtml = '<span style="color: red">';
+      endHtml = '</span>';
+    }
+    document.getElementById('improvement').innerHTML = startHtml + sign + (Math.round(heatmapData['improvement'][cellNumber[0]][cellNumber[1]]).toString()) + ' kg' + endHtml;
+  };
+};
 
 
 // -------------------------------------
@@ -320,68 +388,70 @@ document.addEventListener('DOMContentLoaded', () => {
     // Send request
     requestBlank.send(dataBlank);
 
-
-
     // When the form is submitted, plot the scatterplot
     document.querySelector('#form').onsubmit = () => {
 
-        // Initialize new request
-        const request = new XMLHttpRequest();
-
-        // Gather data from form
-        const bundles = document.querySelector('#bundles').value;
-        const targetmargin = document.querySelector('#targetmargin').value;
-        const minpayout = document.querySelector('#minpayout').value;
-        const maxpayout = document.querySelector('#maxpayout').value;
-        const kgperperson = document.querySelector('#kgperperson').value;
-        const interest = document.querySelector('#interest').value;
-        const deposit = document.querySelector('#deposit').value;
-
-        // Open request to /updategraphs route
-        request.open('POST', '/updategraphs');
-
-        // Callback function for when request completes
-        request.onload = () => {
-
-            // Extract JSON data from request
-            graphData = JSON.parse(request.responseText);
-
-            // Define traces and layouts
-            var traceScat= JSON.parse(JSON.stringify(traceScatBlank));
-            traceScat.x = graphData['premsaspc_list'];
-            traceScat.y = graphData['clsr_list'];
-            traceScat.text = graphData['strikes'];
-
-            // Plot scatterplot with Plotly
-            Plotly.newPlot('scattergraph', [traceScat], layoutScat, {displayModeBar: false});
-            scatterPlot = document.getElementById('scattergraph');
-            scatterPlot.on('plotly_click', changePoint);
-            scatterPlot.on('plotly_click', changeColor);
-            scatterPlot.on('plotly_click', scatterInfo);
-            scatterPlot.on('plotly_click', drawHeatmap);
-
-            if (pointNumber != null) {
-              pointDict = {'points':[{pointNumber: pointNumber}]};
-              drawHeatmap(pointDict);
-              changeColor(pointDict);
-            }
 
 
-        };
+      // Initialize new request
+      const request = new XMLHttpRequest();
 
-        // Add data to send with request
-        const data = new FormData();
-        data.append('bundles', bundles);
-        data.append('targetmargin', targetmargin);
-        data.append('minpayout', minpayout);
-        data.append('maxpayout', maxpayout);
-        data.append('kgperperson', kgperperson);
-        data.append('interest', interest);
-        data.append('deposit', deposit);
+      // Gather data from form
+      const bundles = document.querySelector('#bundles').value;
+      const targetmargin = document.querySelector('#targetmargin').value;
+      const minpayout = document.querySelector('#minpayout').value;
+      const maxpayout = document.querySelector('#maxpayout').value;
+      const kgperperson = document.querySelector('#kgperperson').value;
+      const interest = document.querySelector('#interest').value;
+      const deposit = document.querySelector('#deposit').value;
 
-        // Send request
-        request.send(data);
-        return false;
+      // Open request to /updategraphs route
+      request.open('POST', '/updategraphs');
+
+      // Callback function for when request completes
+      request.onload = () => {
+
+        // Extract JSON data from request
+        graphData = JSON.parse(request.responseText);
+
+        // Define traces and layouts
+        var traceScat= JSON.parse(JSON.stringify(traceScatBlank));
+        traceScat.x = graphData['premsaspc_list'];
+        traceScat.y = graphData['clsr_list'];
+        traceScat.text = graphData['strikes'];
+
+        // Plot scatterplot with Plotly
+        Plotly.newPlot('scattergraph', [traceScat], layoutScat, {displayModeBar: false});
+        scatterPlot = document.getElementById('scattergraph');
+
+        scatterPlot.on('plotly_click', function(e) {
+          changePoint(e);
+          changeColor(e);
+          scatterInfo(e);
+          drawHeatmap(e);
+        });
+
+        if (pointNumber != null) {
+          pointDict = {'points':[{pointNumber: pointNumber}]}
+          changeColor(pointDict);
+          drawHeatmap(pointDict);
+        }
+
+      };
+
+      // Add data to send with request
+      const data = new FormData();
+      data.append('bundles', bundles);
+      data.append('targetmargin', targetmargin);
+      data.append('minpayout', minpayout);
+      data.append('maxpayout', maxpayout);
+      data.append('kgperperson', kgperperson);
+      data.append('interest', interest);
+      data.append('deposit', deposit);
+
+      // Send request
+      request.send(data);
+      return false;
     };
 
 });

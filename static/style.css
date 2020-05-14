@@ -2,34 +2,41 @@ h1, h2, h3, h4, h5, h6, p, a {
   font-family: 'Lato', sans-serif;
 }
 
-.graph-info>h6 {
-  text-transform: uppercase;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 20px;
+.home-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+
+
+/* @media only screen and (min-width: 600px) {
+  .screen-height {
+    height: 100vh;
+  }
+} */
+
 
 .screen-height {
   height: 100vh;
 }
 
 body {
-  background-image: url("maize10.jpg");
+  background-image: url("farmer.jpg");
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 }
 
-.container-fluid {
-  background-color: rgba(255,255,255, 0.6);
-}
+/* .container-fluid.white-bg {
+  background-color: rgba(255,255,255, 0.7);
+} */
 
 .logo {
-  height: 65%;
-
+  height: 100%;
 }
 
 #my-email {
-  font-size: 0.6rem;
   font-weight: 400;
   text-transform: uppercase;
   color: #EEEEEE;
@@ -56,6 +63,8 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
+  padding: 10%;
 }
 
 #form-holder {
@@ -98,25 +107,75 @@ select {
 
 .small-label {
   margin-bottom: 0px;
-  font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
   color: white;
 }
 
+
+@media screen and (min-width: 800px) {
+  .small-label {
+    font-size: calc(6px + 6 * ((100vw - 800px) / 700));
+  }
+}
+@media screen and (min-width: 1500px) {
+  .small-label {
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .form-group.my-form-group {
+    margin-bottom: calc(4px + 6 * ((100vw - 800px) / 700));
+  }
+}
+@media screen and (min-width: 1500px) {
+  .form-group.my-form-group {
+    margin-bottom: 10px;
+  }
+}
+
+
+@media screen and (min-width: 800px) {
+  #my-email {
+    font-size: calc(6px + 5 * ((100vw - 800px) / 700));
+  }
+}
+@media screen and (min-width: 1500px) {
+  #my-email {
+    font-size: 11px;
+  }
+}
+
+
+
+
 .form-group.my-form-group {
-  margin-bottom: 0.5rem;
   width: 100%;
 }
 
-.btn.my-btn {
+.btn.yel-btn {
   background-color:#ffc13b;
   margin-top: 1rem;
 }
 
+.btn.yel-btn:hover {
+  background-color: #ffcb70;
+}
+
+.btn.blu-btn {
+  background-color: #1e3d59;
+  color: white;
+}
+
+.btn.blu-btn:hover {
+  background-color: #ffc13b;
+  color: #222222;
+}
+
 .fas {
   color: #ffc13b;
-  font-size: 14px;
+  margin-left: 5px;
 }
 
 #scatterinfo, #heatmapsinfo {
@@ -128,6 +187,9 @@ select {
 
 #scatterinfo {
   padding-top: 3vh;
+}
+
+#scatter-row {
 }
 
 #heatmapsinfo {
@@ -165,8 +227,64 @@ select {
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  font-size: 0.9rem;
 }
+
+@media screen and (min-width: 600px) {
+  .info-field {
+    font-size: calc(6px + 8 * ((100vw - 600px) / 900));
+  }
+}
+@media screen and (min-width: 1500px) {
+  .info-field {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .fas {
+    font-size: calc(10px + 8 * ((100vw - 600px) / 900));
+  }
+}
+@media screen and (min-width: 1500px) {
+  .fas {
+    font-size: 18px;
+  }
+}
+
+
+
+@media screen and (min-width: 600px) {
+  .info-label {
+    font-size: calc(6px + 6 * ((100vw - 600px) / 900));
+  }
+}
+@media screen and (min-width: 1500px) {
+  .info-label {
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .graph-info>h6 {
+    font-size: calc(8px + 10 * ((100vw - 600px) / 900));
+  }
+}
+@media screen and (min-width: 1500px) {
+  .graph-info>h6 {
+    font-size: 18px;
+  }
+}
+
+
+.graph-info>h6 {
+  text-transform: uppercase;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 8%;
+}
+
+
+
 
 #scatterinfo .info-field {
   height: 8%;
@@ -178,4 +296,44 @@ select {
 
 #heatmaps-container {
   padding-right: 30px;
+}
+
+.embed-responsive.embed-responsive-16by9.embed-wider {
+  width: 100%;
+}
+
+#index-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .form-control-sm.my-select {
+  height: 3vh;
+} */
+
+
+@media screen and (min-width: 600px) {
+  .form-control-sm.my-select {
+    height: calc(18px + 14 * ((100vw - 600px) / 900));
+    padding: calc(2px + 6 * ((100vw - 600px) / 900));
+    font-size: calc(10px + 4 * ((100vw - 600px) / 900));
+  }
+}
+@media screen and (min-width: 1500px) {
+  .form-control-sm.my-select {
+    height: 32px;
+    padding: 8px;
+    font-size: 14px;
+  }
+
+
+
+@media screen and (max-width: 600px) {
+  #right-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 }

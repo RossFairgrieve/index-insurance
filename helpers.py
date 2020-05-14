@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import math
 
 # Define functions for calculating rolling mean and SD of yield at each site
 # (used later)
@@ -16,6 +17,70 @@ def rollingstd(row):
         rolling.append(row.iloc[0:i+1].std(ddof=0))
 
     return pd.Series(rolling, index=row.index)
+
+def sig_payout(indexyield, strikeyield, maxpayout, minpayout, decay=13):
+    effmax = min(strikeyield, maxpayout)
+    k = decay / effmax
+    exponent = k * (indexyield - strikeyield + (effmax/2))
+    denom = 1 + math.exp(exponent)
+    payout = effmax / denom
+    if payout < minpayout:
+        payout = 0
+    return round(payout)
+
+def exp_payout(indexyield, strikeyield, maxpayout, minpayout, decay=5):
+    effmax = min(strikeyield, maxpayout)
+    l = decay / effmax
+    exponent = -l * (indexyield - strikeyield + effmax)
+    payout = effmax * math.exp(exponent)
+
+    payout = min(payout, maxpayout)
+    if payout < minpayout:
+        payout = 0
+    return round(payout)
+
+def lin_payout(indexyield, strikeyield, maxpayout, minpayout):
+    payout = strikeyield-indexyield
+
+    payout = min(payout, maxpayout)
+    if payout < minpayout:
+        payout = 0
+    return payout
+
+
+def propprems(row, strikelevel, payoutfunction, maxpayout, minpayout, decay_exp=5, decay_sig=13):
+    premiums_row = [0]
+    for i in range(1, len(row)):
+        rolling_mean_row = rollingmean(row)
+        strikeyield = rolling_mean_row[i-1] * strikelevel
+
+        contributing_payouts = []
+        for j in range(0,i):
+
+            if row[j] < strikeyield:
+                if payoutfunction == "linear":
+                    payout = lin_payout(row[j], strikeyield, maxpayout, minpayout)
+                    contributing_payouts.append(payout)
+                elif payoutfunction == "exponential":
+                    payout = exp_payout(row[j], strikeyield, maxpayout, minpayout, decay_exp)
+                    contributing_payouts.append(payout)
+                elif payoutfunction == "sigmoidal":
+                    payout = sig_payout(row[j], strikeyield, maxpayout, minpayout, decay_sig)
+                    contributing_payouts.append(payout)
+                else:
+                    print(f"""Value of payoutfunction not recognised.\n
+                          Only accepts 'linear', 'exponential' or 'sigmoidal'.\n
+                          You have entered {payoutfunction}""")
+                    return
+            else:
+                contributing_payouts.append(0)
+
+        if sum(contributing_payouts) == 0:
+            premium = 0
+        else:
+            premium = np.mean(contributing_payouts)
+        premiums_row.append(premium)
+    return premiums_row
 
 
 # Define function for labelling bundles based on rolling mean and SD
@@ -60,24 +125,40 @@ def bundle_adjust(premiums_df, mean_bundles_df, std_bundles_df, bundles):
 
 
 # Define function for calculating cost of insurance based on historical payouts
-def calc_payouts_premiums(df, strikelevel, calcmethod="hpayouts", payoutfunction="linear", minpayout=0, maxpayout=99999, targetmargin=0.25, bundles=0):
+def calc_payouts_premiums(df, strikelevel, striketype="fixedyield", calcmethod="hpayouts", payoutfunction="linear", minpayout=0, maxpayout=999999, targetmargin=0.25, bundles=0):
 
     payouts = []
 
     for ind, row in df.iterrows():
 
+        rolling_means_row = rollingmean(row)
         payouts_row = []
 
         for i in range(len(row)):
-            if row[i] < strikelevel - minpayout:
+
+            if striketype == "fixedyield":
+                strikeyield = strikelevel
+            elif striketype == "propavg":
+                strikeyield = rolling_means_row[i-1] * strikelevel
+            else:
+                print("striketype not recognised")
+                return
+
+            if row[i] < strikeyield:
                 if payoutfunction == "linear":
-                    payouts_row.append(min(strikelevel-row[i], maxpayout))
+                    payout = lin_payout(row[i], strikeyield, maxpayout, minpayout)
+                    payouts_row.append(payout)
                 elif payoutfunction == "exponential":
-                    # TODO
-                    payouts_row.append(min(strikelevel-row[i], maxpayout))
+                    payout = exp_payout(row[i], strikeyield, maxpayout, minpayout, decay=5)
+                    payouts_row.append(payout)
                 elif payoutfunction == "sigmoidal":
-                    # TODO
-                    payouts_row.append(min(strikelevel-row[i], maxpayout))
+                    payout = sig_payout(row[i], strikeyield, maxpayout, minpayout, decay=13)
+                    payouts_row.append(payout)
+                else:
+                    print(f"""Value of payoutfunction not recognised.\n
+                          Only accepts 'linear', 'exponential' or 'sigmoidal'.\n
+                          You have entered {payoutfunction}""")
+                    return
             else:
                 payouts_row.append(0)
 
@@ -85,17 +166,22 @@ def calc_payouts_premiums(df, strikelevel, calcmethod="hpayouts", payoutfunction
 
     payouts = pd.DataFrame(payouts, index=df.index, columns=df.columns)
 
-    # Calculate premiums
-    af_premiums = []
 
-    for ind, row in payouts.iterrows():
+    if striketype == "fixedyield":
+        # Calculate premiums
+        af_premiums = []
 
-        af_premiums_row = [0]
+        for ind, row in payouts.iterrows():
+            af_premiums_row = [0]
 
-        for i in range(1, len(row)):
-            af_premiums_row.append( sum(row[0:i])/i )
+            for i in range(1, len(row)):
+                af_premiums_row.append( sum(row[0:i])/i )
 
-        af_premiums.append(af_premiums_row)
+            af_premiums.append(af_premiums_row)
+
+    elif striketype == "propavg":
+        af_premiums = df.apply(lambda x: propprems(x, strikelevel, payoutfunction, maxpayout, minpayout, decay_exp=5, decay_sig=13), axis=1)
+
 
     af_premiums = pd.DataFrame(af_premiums, index=df.index, columns=df.columns)
     loaded_premiums = af_premiums * (1 + targetmargin)
@@ -176,6 +262,6 @@ def evaluate(realyields_df, critthresh_df, payouts_df, premiums_df, farmarea_ser
     if total_payouts == 0 and total_premiums == 0:
         realised_margin = 0
     else:
-        realised_margin = ((total_premiums / total_payouts)-1)
+        realised_margin = 100 * ((total_premiums / total_payouts)-1)
 
     return critloss_df_noins, critloss_df_ins, critloss_sum_red, critloss_count_red, critloss_farms_red, prems_as_pc, realised_margin

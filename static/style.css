@@ -8,6 +8,62 @@ h1, h2, h3, h4, h5, h6, p, a {
   justify-content: center;
 }
 
+.btn.accordion-btn {
+  color: #1e3d59;
+  font-weight: bold;
+  text-decoration: none;
+  line-height: 110%;
+  padding: 0px;
+}
+
+.btn.accordion-btn:hover {
+  color: #ffc13b;
+  text-decoration: none;
+}
+
+@media screen and (min-width: 576px) {
+  .btn.accordion-btn {
+    font-size: 6px;
+  }
+}
+@media screen and (min-width: 800px) {
+  .btn.accordion-btn {
+    font-size: calc(8px + 9 * ((100vw - 800px) / 700));
+  }
+}
+@media screen and (min-width: 1500px) {
+  .btn.accordion-btn {
+    font-size: 17px;
+  }
+}
+
+.fas {
+  color: #ffc13b;
+}
+
+.fa-caret-down {
+  color: #ffc13b;
+  margin-left: 5px;
+}
+
+.fa-question-circle {
+  margin-left: 5px;
+}
+
+.fa-question-circle:hover {
+  color: #1e3d59;
+}
+
+.card-header.left-card-header {
+  padding: 0.5rem 1.25rem 0 1.25rem;
+  text-align: center;
+  width: 100%;
+}
+
+.card-body.left-card-body {
+  padding: 1rem;
+}
+
 
 
 /* @media only screen and (min-width: 600px) {
@@ -32,21 +88,9 @@ body {
   background-color: rgba(255,255,255, 0.7);
 } */
 
-.logo {
-  height: 100%;
-}
 
-#my-email {
-  font-weight: 400;
-  text-transform: uppercase;
-  color: #EEEEEE;
-  margin-top: 5px;
-}
 
-.my-email:hover {
-  color: #ffc13b;
-  text-decoration: none;
-}
+
 
 .full-height {
   height: 100%;
@@ -58,16 +102,57 @@ body {
 }
 
 #app-info {
-  height: 15%;
+  height: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   width: 100%;
-  padding: 10%;
+  padding: 15%;
 }
 
-#form-holder {
+#logo-container {
+  height: 75%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#logo {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+}
+
+#email-container a {
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #EEEEEE;
+  margin-top: 5px;
+}
+
+#email-container a:hover {
+  color: #ffc13b;
+  text-decoration: none;
+}
+
+@media screen and (min-width: 576px) {
+  #email-container {
+    font-size: calc(6px + 5 * ((100vw - 600px) / 924));
+  }
+}
+@media screen and (min-width: 1500px) {
+  #email-container {
+    font-size: 11px;
+  }
+}
+
+#form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 #scatter-row {
@@ -92,7 +177,7 @@ body {
 }
 
 #side-form {
-  height: 85%;
+  height: 80%;
   padding: 0 10% 5% 10%;
 
 }
@@ -109,7 +194,7 @@ select {
   margin-bottom: 0px;
   font-weight: bold;
   text-transform: uppercase;
-  color: white;
+  color: #1e3d59;
 }
 
 
@@ -136,16 +221,7 @@ select {
 }
 
 
-@media screen and (min-width: 800px) {
-  #my-email {
-    font-size: calc(6px + 5 * ((100vw - 800px) / 700));
-  }
-}
-@media screen and (min-width: 1500px) {
-  #my-email {
-    font-size: 11px;
-  }
-}
+
 
 
 
@@ -173,10 +249,7 @@ select {
   color: #222222;
 }
 
-.fas {
-  color: #ffc13b;
-  margin-left: 5px;
-}
+
 
 #scatterinfo, #heatmapsinfo {
   background-color: #ffc13b;

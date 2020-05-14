@@ -23,7 +23,7 @@ var layoutScat = {
     text: '<span style="font-weight: bold; text-transform: uppercase;">Overall insurance performance<br>at various strike levels</span>',
     font: {
       size: 14,
-      color: '#000000'
+      color: '#444444'
     },
     y: 0.94
   },
@@ -32,10 +32,13 @@ var layoutScat = {
     title: {
       text: '<span style="font-weight: bold;">Mean insurance cost as % of harvest value</span>',
       font: {
-        size: 12,
-        color: '#000000'
+        size: 14,
+        color: '#444444'
       },
       standoff: 0
+    },
+    tickfont: {
+      size: 14
     }
   },
   yaxis: {
@@ -43,17 +46,20 @@ var layoutScat = {
     title: {
       text: '<span style="font-weight: bold;">Reduction in total<br>critical shortfall (%)</span>',
       font: {
-        size: 12,
-        color: '#000000'
+        size: 14,
+        color: '#444444'
       },
       standoff: 0
+    },
+    tickfont: {
+      size: 14
     }
   },
   hovermode: 'closest',
   showlegend: false,
   margin: {
-    l: 100,
-    r: 100,
+    l: 80,
+    r: 80,
     b: 50,
     t: 50,
     pad: 0
@@ -118,8 +124,8 @@ var layoutHeatmapBase = {
   margin: {
     l: 25,
     r: 25,
-    b: 50,
-    t: 50,
+    b: 65,
+    t: 65,
     pad: 0,
   },
   plot_bgcolor:'rgb(255, 255, 255)',
@@ -127,7 +133,7 @@ var layoutHeatmapBase = {
   title: {
     // text: '<b>Critical shortfall<br>No insurance (kg)</b>',
     font: {
-      size: 14
+      size: 12
     },
     x: 0.45
   }
@@ -183,9 +189,9 @@ function drawHeatmap(d=null) {
       var layoutIns = JSON.parse(JSON.stringify(layoutHeatmapBase));
       var layoutImp = JSON.parse(JSON.stringify(layoutHeatmapBase));
 
-      layoutNoins.title.text = '<b>Critical shortfall<br>No insurance (kg)</b>';
-      layoutIns.title.text = '<b>Critical shortfall<br>With insurance (kg)</b>';
-      layoutImp.title.text = '<b>Change with<br>insurance (kg)</b>';
+      layoutNoins.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Critical shortfall<br>No insurance (kg)</span>';
+      layoutIns.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Critical shortfall<br>With insurance (kg)</span>';
+      layoutImp.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Change with<br>insurance (kg)</span>';
 
       Plotly.newPlot('heatmap1', [traceCritNoins], layoutNoins, {displayModeBar: false});
       Plotly.newPlot('heatmap2', [traceCritIns], layoutIns, {displayModeBar: false});
@@ -373,9 +379,9 @@ document.addEventListener('DOMContentLoaded', () => {
       var layout2 = JSON.parse(JSON.stringify(layoutHeatmapBase));
       var layout3 = JSON.parse(JSON.stringify(layoutHeatmapBase));
 
-      layout1.title.text = '<b>Critical shortfall<br>No insurance (kg)</b>'
-      layout2.title.text = '<b>Critical shortfall<br>With insurance (kg)</b>'
-      layout3.title.text = '<b>Change with<br>insurance (kg)</b>'
+      layout1.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Critical shortfall<br>No insurance (kg)</span>'
+      layout2.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Critical shortfall<br>With insurance (kg)</span>'
+      layout3.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Change with<br>insurance (kg)</span>'
 
       Plotly.newPlot('heatmap1', [traceCritBlank], layout1, {displayModeBar: false});
       Plotly.newPlot('heatmap2', [traceCritBlank], layout2, {displayModeBar: false});

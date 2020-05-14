@@ -44,11 +44,6 @@ def index():
                            regions = data['group'].unique()
                            )
 
-@app.route("/analysis")
-def analysis():
-    return render_template("analysis.html",
-                           regions = data['group'].unique()
-                           )
 
 @app.route("/updategraphs", methods=["POST"])
 def updategraphs():

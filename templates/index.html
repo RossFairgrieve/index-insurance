@@ -6,7 +6,7 @@
   <link rel="stylesheet" type="text/css" href="./static/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <script src="{{url_for('static', filename='analysis.js')}}"></script>
+  <script src="{{url_for('static', filename='index.js')}}"></script>
 
   <!-- JS, Popper.js, and jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -21,221 +21,275 @@
     <div class="row full-height">
       <div class="col-sm-2 full-height" id="sidebar">
         <div id="app-info">
-          <img src="../static/media/logo3.png" class="logo">
-          <a class="row" id="my-email" href="mailto:info&#64;rossfairgrieve.com">info&#64;rossfairgrieve.com</a>
+          <div id="logo container">
+            <img src="../static/media/logo3.png" id="logo">
+          </div>
+          <div id="email-container">
+            <a href="mailto:info&#64;rossfairgrieve.com">info&#64;rossfairgrieve.com</a>
+          </div>
         </div>
+
         <div class="row" id="side-form">
-          <form id="form" class="trans-bg">
+          <form id="form">
 
-            <div class="form-group my-form-group">
-              <label for="bundles" class="small-label">Risk Aggregation</label><a href="#" data-toggle="modal" data-target="#helpBundling"><i class="fas fa-question-circle"></i></a>
+            <div class="accordion" id="accordionExample">
+              <div class="card">
+                <div class="card-header left-card-header" id="headingOne">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link accordion-btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Insurance Parameters<br><i class="fas fa-caret-down fa-2x"></i>
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                  <div class="card-body left-card-body">
+                    <div class="form-group my-form-group">
+                      <label for="bundles" class="small-label">Risk Aggregation</label><a href="#" data-toggle="modal" data-target="#helpBundling"><i class="fas fa-question-circle"></i></a>
 
 
-              <!-- Modal -->
-              <div class="modal fade" id="helpBundling" tabindex="-1" role="dialog" aria-labelledby="helpBundlingTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="helpBundlingTitle">Modal title</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="embed-responsive embed-responsive-16by9">
-                        <iframe src="https://www.youtube.com/embed/QjxIlV3uhY8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                      <!-- Modal -->
+                      <div class="modal fade" id="helpBundling" tabindex="-1" role="dialog" aria-labelledby="helpBundlingTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="helpBundlingTitle">Modal title</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="embed-responsive embed-responsive-16by9">
+                                <iframe src="https://www.youtube.com/embed/QjxIlV3uhY8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                              </div>
+                              <p>Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                                Text text text text text Text text text text text text
+                              </p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn blu-btn" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <p>Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                        Text text text text text Text text text text text text
-                      </p>
+
+
+                      <select class="form-control-sm my-select" id="bundles">
+                        <option value=0 selected>None</option>
+                        <option value=3>Nine groups</option>
+                        <option value=2>Four groups</option>
+                        <option value=1>One group (flat rate)</option>
+                      </select>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn blu-btn" data-dismiss="modal">Close</button>
+
+                    <div class="form-group my-form-group">
+                      <label for="targetmargin" class="small-label">Premium loading<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
+                      <select class="form-control-sm my-select" id="targetmargin">
+                        <option value=0>No margin</option>
+                        <option value=0.1>10%</option>
+                        <option value=0.2 selected>20%</option>
+                        <option value=0.3>30%</option>
+                        <option value=0.4>40%</option>
+                        <option value=0.5>50%</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group my-form-group">
+                      <label for="minpayout" class="small-label">Minimum Payout<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
+                      <select class="form-control-sm my-select" id="minpayout">
+                        <option value=0>No minimum</option>
+                        <option value=500 selected>500kg/ha equiv.</option>
+                        <option value=1000>1000kg/ha equiv.</option>
+                        <option value=2000>2000kg/ha equiv.</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group my-form-group">
+                      <label for="maxpayout" class="small-label">Maximum Payout<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
+                      <select class="form-control-sm my-select" id="maxpayout">
+                        <option value=999999 selected>No maximum</option>
+                        <option value=1000>1000kg/ha equiv.</option>
+                        <option value=2500>2500kg/ha equiv.</option>
+                      </select>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header left-card-header" id="headingTwo">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link collapsed accordion-btn" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      Livelihood Parameters<br><i class="fas fa-caret-down fa-2x"></i>
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+
+                  <div class="card-body left-card-body">
+                    <div class="form-group my-form-group">
+                      <label for="kgperperson" class="small-label">Min. crop per person<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
+                      <select class="form-control-sm my-select" id="kgperperson">
+                        <option value=90>90kg</option>
+                        <option value=180 selected>180kg</option>
+                        <option value=360>360kg</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group my-form-group">
+                      <label for="interest" class="small-label">Loan interest rate<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
+                      <select class="form-control-sm my-select" id="interest">
+                        <option value=0>Interest-free (0%)</option>
+                        <option value=0.05>5%</option>
+                        <option value=0.1>10%</option>
+                        <option value=0.2 selected>20%</option>
+                        <option value=0.35>35%</option>
+                        <option value=0.5>50%</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group my-form-group">
+                      <label for="deposit" class="small-label">Loan deposit<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
+                      <select class="form-control-sm my-select" id="deposit">
+                        <option value=0>0%</option>
+                        <option value=0.1>10%</option>
+                        <option value=0.25 selected>25%</option>
+                        <option value=0.5>50%</option>
+                        <option value=1.0>No loan required</option>
+                      </select>
                     </div>
                   </div>
                 </div>
               </div>
-
-
-              <select class="form-control-sm my-select" id="bundles">
-                <option value=0 selected>None</option>
-                <option value=3>Nine groups</option>
-                <option value=2>Four groups</option>
-                <option value=1>One group (flat rate)</option>
-              </select>
             </div>
 
-            <div class="form-group my-form-group">
-              <label for="targetmargin" class="small-label">Insurer target margin <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-              <select class="form-control-sm my-select" id="targetmargin">
-                <option value=0>No margin</option>
-                <option value=0.1>10%</option>
-                <option value=0.2 selected>20%</option>
-                <option value=0.3>30%</option>
-                <option value=0.4>40%</option>
-                <option value=0.5>50%</option>
-              </select>
-            </div>
 
-            <div class="form-group my-form-group">
-              <label for="minpayout" class="small-label">Minimum Payout <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-              <select class="form-control-sm my-select" id="minpayout">
-                <option value=0>No minimum</option>
-                <option value=500 selected>500kg/ha equiv.</option>
-                <option value=1000>1000kg/ha equiv.</option>
-                <option value=2000>2000kg/ha equiv.</option>
-              </select>
-            </div>
 
-            <div class="form-group my-form-group">
-              <label for="maxpayout" class="small-label">Maximum Payout <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-              <select class="form-control-sm my-select" id="maxpayout">
-                <option value=999999 selected>No maximum</option>
-                <option value=1000>1000kg/ha equiv.</option>
-                <option value=2500>2500kg/ha equiv.</option>
-              </select>
-            </div>
 
-            <div class="form-group my-form-group">
-              <label for="kgperperson" class="small-label">Min crop per person <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-              <select class="form-control-sm my-select" id="kgperperson">
-                <option value=90>90kg</option>
-                <option value=180 selected>180kg</option>
-                <option value=360>360kg</option>
-              </select>
-            </div>
 
-            <div class="form-group my-form-group">
-              <label for="interest" class="small-label">Loan interest rate <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-              <select class="form-control-sm my-select" id="interest">
-                <option value=0>Interest-free (0%)</option>
-                <option value=0.05>5%</option>
-                <option value=0.1>10%</option>
-                <option value=0.2 selected>20%</option>
-                <option value=0.35>35%</option>
-                <option value=0.5>50%</option>
-              </select>
-            </div>
 
-            <div class="form-group my-form-group">
-              <label for="deposit" class="small-label">Loan deposit <a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-              <select class="form-control-sm my-select" id="deposit">
-                <option value=0>0%</option>
-                <option value=0.1>10%</option>
-                <option value=0.25 selected>25%</option>
-                <option value=0.5>50%</option>
-                <option value=1.0>No loan required</option>
-              </select>
-            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <button id="form-button" class="btn yel-btn">Analyse</button>
           </form>

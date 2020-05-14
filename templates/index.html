@@ -302,16 +302,18 @@
           <div class="col-sm-10 full-height" id="scattergraph">
             <!-- Scatterplot goes here -->
           </div>
-          <div class="col-sm-2 graph-info" id="scatterinfo">
-            <h6>Policy Performance</h6>
-            <div class="info-label">Strike level</div>
-            <div class="info-field" id="strike"></div>
-            <div class="info-label">Reduction in crit. shortfall</div>
-            <div class="info-field" id="cls-red"></div>
-            <div class="info-label">Mean ins. cost as % of harvest</div>
-            <div class="info-field" id="prems-as-pc"></div>
-            <div class="info-label">Realised insurer margin</div>
-            <div class="info-field" id="real-margin"></div>
+          <div class="col-sm-2" id="scatterinfoholder">
+            <div class="row graph-info" id="scatterinfo">
+              <h6>Policy Performance</h6>
+              <div class="info-label">Strike level</div>
+              <div class="info-field" id="strike"></div>
+              <div class="info-label">Reduction in crit. shortfall</div>
+              <div class="info-field" id="cls-red"></div>
+              <div class="info-label">Mean ins. cost as % of harvest</div>
+              <div class="info-field" id="prems-as-pc"></div>
+              <div class="info-label">Realised insurer margin</div>
+              <div class="info-field" id="real-margin"></div>
+            </div>
           </div>
         </div>
         <div class="row" id="heatmaps-row">
@@ -329,20 +331,22 @@
             </div>
             <!-- Heatmaps go here -->
           </div>
-          <div class="col-sm-2 full-height graph-info" id="heatmapsinfo">
-            <h6>Individual farms & years</h6>
-            <div class="info-label">Site and Year:</div>
-            <div class="info-field" id="site-year"></div>
-            <div class="info-label">Index estimated yield</div>
-            <div class="info-field" id="index-yield"></div>
-            <div class="info-label">Actual yield</div>
-            <div class="info-field" id="real-yield"></div>
-            <div class="info-label">Crit. shortfall - no ins.</div>
-            <div class="info-field" id="crit-loss-noins"></div>
-            <div class="info-label">Crit. shortfall - with ins.</div>
-            <div class="info-field" id="crit-loss-ins"></div>
-            <div class="info-label">Change with ins.</div>
-            <div class="info-field" id="improvement"></div>
+          <div class="col-sm-2 full-height graph-info" id="heatmapsinfoholder">
+            <div class="row graph-info" id="heatmapsinfo">
+              <h6>Individual farms & years</h6>
+              <div class="info-label">Site and Year:</div>
+              <div class="info-field" id="site-year"></div>
+              <div class="info-label">Index estimated yield</div>
+              <div class="info-field" id="index-yield"></div>
+              <div class="info-label">Actual yield</div>
+              <div class="info-field" id="real-yield"></div>
+              <div class="info-label">Crit. shortfall - no ins.</div>
+              <div class="info-field" id="crit-loss-noins"></div>
+              <div class="info-label">Crit. shortfall - with ins.</div>
+              <div class="info-field" id="crit-loss-ins"></div>
+              <div class="info-label">Change with ins.</div>
+              <div class="info-field" id="improvement"></div>
+            </div>
           </div>
         </div>
       </div>

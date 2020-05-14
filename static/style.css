@@ -2,12 +2,6 @@ h1, h2, h3, h4, h5, h6, p, a {
   font-family: 'Lato', sans-serif;
 }
 
-.home-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .btn.accordion-btn {
   color: #1e3d59;
   font-weight: bold;
@@ -52,6 +46,10 @@ h1, h2, h3, h4, h5, h6, p, a {
 
 .fa-question-circle:hover {
   color: #1e3d59;
+}
+
+.fa-caret-down {
+  margin-top: -5px;
 }
 
 .card-header.left-card-header {
@@ -249,41 +247,6 @@ select {
   color: #222222;
 }
 
-
-
-#scatterinfo, #heatmapsinfo {
-  background-color: #ffc13b;
-  color: #1e3d59;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-#scatterinfo {
-  padding-top: 3vh;
-}
-
-#scatter-row {
-}
-
-#heatmapsinfo {
-  padding-top: 1.5vh;
-}
-
-.red-bg {
-  background-color: red;
-}
-
-.colorbar {
-  object-fit: contain;
-  max-height: 55vh;
-}
-
-.cbar-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .info-label {
   font-size: 11px;
   text-transform: uppercase;
@@ -337,14 +300,26 @@ select {
   }
 }
 
+
+.graph-info {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffc13b;
+  color: #1e3d59;
+  padding-left: 9%;
+  padding-right: 9%;
+}
+
 @media screen and (min-width: 600px) {
   .graph-info>h6 {
-    font-size: calc(8px + 10 * ((100vw - 600px) / 900));
+    font-size: calc(6px + 8 * ((100vw - 600px) / 900));
   }
 }
 @media screen and (min-width: 1500px) {
   .graph-info>h6 {
-    font-size: 18px;
+    font-size: 14px;
   }
 }
 
@@ -403,10 +378,10 @@ select {
 
 
 
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
   #right-content {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
   }
-}
+} */

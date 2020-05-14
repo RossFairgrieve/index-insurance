@@ -5,6 +5,7 @@ import json
 import numpy as np
 import pandas as pd
 import helpers
+import math
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -89,7 +90,7 @@ def updategraphs():
                                            loaninterest=interest,
                                            kg_per_mouth=kgperperson)
 
-        cl_noins, cl_ins, clsr, clcr, clfr, premsaspc, realisedmargin = helpers.evaluate(realyields,
+        cl_noins, cl_ins, clsr, clcr, clfr, rmsr, premsaspc, realisedmargin = helpers.evaluate(realyields,
                                                          crit_thresh_df,
                                                          payouts,
                                                          premiums,
@@ -139,7 +140,7 @@ def heatmap():
                                        loaninterest=interest,
                                        kg_per_mouth=kgperperson)
 
-    cl_noins, cl_ins, clsr, clcr, clfr, premsaspc, realisedmargin = helpers.evaluate(realyields,
+    cl_noins, cl_ins, clsr, clcr, clfr, rmsr, premsaspc, realisedmargin = helpers.evaluate(realyields,
                                                      crit_thresh_df,
                                                      payouts,
                                                      premiums,

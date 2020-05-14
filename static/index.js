@@ -11,7 +11,7 @@ var traceScatBlank = {
     // color: '#ff6e40'
     color:'#224d73'
   },
-  hovertemplate:'<b>Strike Level:</b> %{text}kg/ha<extra></extra>',
+  hovertemplate:'%{text}<extra></extra>',
   hoverinfo: '',
   line: {shape: 'spline', smoothing: 1.3}
 };
@@ -87,6 +87,14 @@ var traceHeatmapBase = {
     tickangle: 270,
     tickfont: {
       size: 12
+    }
+  },
+  hoverinfo: '',
+  hoverlabel: {
+    bgcolor: '#EEEEEE',
+    bordercolor: '#CCCCCC',
+    font: {
+      color: '#666666'
     }
   }
 };
@@ -193,6 +201,52 @@ function drawHeatmap(d=null) {
       layoutIns.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Critical shortfall<br>With insurance (kg)</span>';
       layoutImp.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Change with<br>insurance (kg)</span>';
 
+      var heatmap1text = [];
+      for (var i = 0; i < heatmapData['sitenames'].length; i++) {
+        heatmap1text.push([])
+        for (var j = 0; j < heatmapData['columns'].length; j++) {
+          if (heatmapData['cl_noins'][i][j] < 0) {
+            heatmap1text[i].push(`<b>Site:</b> ${heatmapData['sitenames'][i]}<br><b>Year:</b> ${heatmapData['columns'][j]}<br><b>Crit. shortfall:</b> <span style="font-weight: bold; color: red;">${-heatmapData['cl_noins'][i][j].toFixed(0)} kg</span>`);
+          } else {
+            heatmap1text[i].push(`<b>Site:</b> ${heatmapData['sitenames'][i]}<br><b>Year:</b> ${heatmapData['columns'][j]}<br><b>Crit. shortfall:</b> <span style="font-weight: bold;">${-heatmapData['cl_noins'][i][j].toFixed(0)} kg</span>`);
+          }
+        }
+      }
+
+      var heatmap2text = [];
+      for (var i = 0; i < heatmapData['sitenames'].length; i++) {
+        heatmap2text.push([])
+        for (var j = 0; j < heatmapData['columns'].length; j++) {
+          if (heatmapData['cl_ins'][i][j] < 0) {
+            heatmap2text[i].push(`<b>Site:</b> ${heatmapData['sitenames'][i]}<br><b>Year:</b> ${heatmapData['columns'][j]}<br><b>Crit. shortfall:</b> <span style="font-weight: bold; color: red;">${-heatmapData['cl_ins'][i][j].toFixed(0)} kg</span>`);
+          } else {
+            heatmap2text[i].push(`<b>Site:</b> ${heatmapData['sitenames'][i]}<br><b>Year:</b> ${heatmapData['columns'][j]}<br><b>Crit. shortfall:</b> <span style="font-weight: bold;">${-heatmapData['cl_ins'][i][j].toFixed(0)} kg</span>`);
+          }
+        }
+      }
+
+      var heatmap3text = [];
+      for (var i = 0; i < heatmapData['sitenames'].length; i++) {
+        heatmap3text.push([])
+        for (var j = 0; j < heatmapData['columns'].length; j++) {
+          if (heatmapData['improvement'][i][j] > 0) {
+            heatmap3text[i].push(`<b>Site:</b> ${heatmapData['sitenames'][i]}<br><b>Year:</b> ${heatmapData['columns'][j]}<br><b>Change:</b> <span style="font-weight: bold; color: limegreen;">${heatmapData['improvement'][i][j].toFixed(0)} kg</span>`);
+          } else if (heatmapData['improvement'][i][j] < 0) {
+            heatmap3text[i].push(`<b>Site:</b> ${heatmapData['sitenames'][i]}<br><b>Year:</b> ${heatmapData['columns'][j]}<br><b>Change:</b> <span style="font-weight: bold; color: red;">${heatmapData['improvement'][i][j].toFixed(0)} kg</span>`);
+          } else {
+            heatmap3text[i].push(`<b>Site:</b> ${heatmapData['sitenames'][i]}<br><b>Year:</b> ${heatmapData['columns'][j]}<br><b>Change: ${heatmapData['improvement'][i][j].toFixed(0)} kg</b>`);
+          }
+        }
+      }
+
+      traceCritNoins.text = heatmap1text;
+      traceCritIns.text = heatmap2text;
+      traceImp.text = heatmap3text;
+
+      traceCritNoins.hovertemplate = '%{text}<extra></extra>';
+      traceCritIns.hovertemplate = '%{text}<extra></extra>';
+      traceImp.hovertemplate = '%{text}<extra></extra>';
+
       Plotly.newPlot('heatmap1', [traceCritNoins], layoutNoins, {displayModeBar: false});
       Plotly.newPlot('heatmap2', [traceCritIns], layoutIns, {displayModeBar: false});
       Plotly.newPlot('heatmap3', [traceImp], layoutImp, {displayModeBar: false});
@@ -212,6 +266,58 @@ function drawHeatmap(d=null) {
         // console.log(`About to update heatmap info for cell ${cellNumber}`)
         heatmapInfo(cellDict);
       }
+
+      // Link hover for all heatmaps
+      document.getElementById('heatmap1').on('plotly_hover', function (eventdata){
+        var points = eventdata.points[0],
+        pointNum = points.pointNumber;
+
+        Plotly.Fx.hover('heatmap2',[{ curveNumber:0, pointNumber:pointNum }]);
+        Plotly.Fx.hover('heatmap3',[{ curveNumber:0, pointNumber:pointNum }]);
+      });
+
+      document.getElementById('heatmap2').on('plotly_hover', function (eventdata){
+        var points = eventdata.points[0],
+        pointNum = points.pointNumber;
+
+        Plotly.Fx.hover('heatmap1',[{ curveNumber:0, pointNumber:pointNum }]);
+        Plotly.Fx.hover('heatmap3',[{ curveNumber:0, pointNumber:pointNum }]);
+      });
+
+      document.getElementById('heatmap3').on('plotly_hover', function (eventdata){
+        var points = eventdata.points[0],
+        pointNum = points.pointNumber;
+
+        Plotly.Fx.hover('heatmap1',[{ curveNumber:0, pointNumber:pointNum }]);
+        Plotly.Fx.hover('heatmap2',[{ curveNumber:0, pointNumber:pointNum }]);
+      });
+
+
+
+      // Link unhover for all heatmaps
+      document.getElementById('heatmap1').on('plotly_unhover', function (eventdata){
+        var points = eventdata.points[0],
+        pointNum = points.pointNumber;
+
+        Plotly.Fx.unhover('heatmap2',[{ curveNumber:0, pointNumber:pointNum }]);
+        Plotly.Fx.unhover('heatmap3',[{ curveNumber:0, pointNumber:pointNum }]);
+      });
+
+      document.getElementById('heatmap2').on('plotly_unhover', function (eventdata){
+        var points = eventdata.points[0],
+        pointNum = points.pointNumber;
+
+        Plotly.Fx.unhover('heatmap1',[{ curveNumber:0, pointNumber:pointNum }]);
+        Plotly.Fx.unhover('heatmap3',[{ curveNumber:0, pointNumber:pointNum }]);
+      });
+
+      document.getElementById('heatmap3').on('plotly_unhover', function (eventdata){
+        var points = eventdata.points[0],
+        pointNum = points.pointNumber;
+
+        Plotly.Fx.unhover('heatmap1',[{ curveNumber:0, pointNumber:pointNum }]);
+        Plotly.Fx.unhover('heatmap2',[{ curveNumber:0, pointNumber:pointNum }]);
+      });
 
     }
 
@@ -424,7 +530,13 @@ document.addEventListener('DOMContentLoaded', () => {
         var traceScat= JSON.parse(JSON.stringify(traceScatBlank));
         traceScat.x = graphData['premsaspc_list'];
         traceScat.y = graphData['clsr_list'];
-        traceScat.text = graphData['strikes'];
+
+        var scattertext = [];
+        var hoversuffix = 'kg/ha'
+        for (var i = 0; i < graphData['strikes'].length; i++) {
+          scattertext.push(`<b>Payout theshold:</b> ${graphData['strikes'][i]} ${hoversuffix}<br><b>Insurer margin:</b> ${graphData['realised_margin'][i].toFixed(1)} %`);
+        }
+        traceScat.text = scattertext;
 
         // Plot scatterplot with Plotly
         Plotly.newPlot('scattergraph', [traceScat], layoutScat, {displayModeBar: false});

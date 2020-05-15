@@ -4,6 +4,7 @@
 <head>
   <title>Smallholder Index Insurance Analyser</title>
   <link rel="stylesheet" type="text/css" href="./static/style.css">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="{{url_for('static', filename='index.js')}}"></script>
@@ -19,7 +20,7 @@
 <body>
   <div class="container-fluid screen-height">
     <div class="row full-height">
-      <div class="col-sm-2 full-height" id="sidebar">
+      <div class="col-2 full-height" id="sidebar">
         <div id="app-info">
           <div id="logo container">
             <img src="../static/media/logo3.png" id="logo">
@@ -30,279 +31,226 @@
         </div>
 
         <div class="row" id="side-form">
-          <form id="form">
 
-            <div class="accordion" id="accordionExample">
-              <div class="card">
-                <div class="card-header left-card-header" id="headingOne">
-                  <h2 class="mb-0">
-                    <button class="btn btn-link accordion-btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                      Insurance Parameters<br><i class="fas fa-caret-down fa-2x"></i>
-                    </button>
-                  </h2>
-                </div>
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                  <div class="card-body left-card-body">
-                    <div class="form-group my-form-group">
-                      <label for="bundles" class="small-label">Risk Aggregation</label><a href="#" data-toggle="modal" data-target="#helpBundling"><i class="fas fa-question-circle"></i></a>
+          <ul class="nav nav-tabs">
+            <li class="active"><a class="active" data-toggle="tab" href="#instructions">Instructions</a></li>
+            <li><a data-toggle="tab" href="#analyse">Analyse</a></li>
+          </ul>
 
+          <div class="tab-content">
+            <div id="instructions" class="tab-pane fade show active">
+              <img src="../static/farmer.jpg">
+              <ul>
+                <li>Design your insurance poilicy using the dropdown fields and hit the 'Analyse' button to see how it performs at different payout thresholds.</li>
+                <li>Click a point on the scatterplot to see more information about the policy's performance at a specific payout threshold.</li>
+                <li>Click on a heatmap cell to see how that policy would have performed at an individual farm, in an individual year.</li>
+                <li>Look out for the <i class="fas fa-question-circle"></i> icons for explanations of specific topics</li>
+                <li>Click on <em>Analyse</em>, above, to get started.</li>
+              </ul>
+            </div>
+            <div id="analyse" class="tab-pane fade">
+              <form id="form">
 
-                      <!-- Modal -->
-                      <div class="modal fade" id="helpBundling" tabindex="-1" role="dialog" aria-labelledby="helpBundlingTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="helpBundlingTitle">Modal title</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="embed-responsive embed-responsive-16by9">
-                                <iframe src="https://www.youtube.com/embed/QjxIlV3uhY8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="accordion" id="accordionExample">
+                  <div class="card">
+                    <div class="card-header left-card-header" id="headingOne">
+                      <h2 class="mb-0">
+                        <button class="btn btn-link accordion-btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                          Insurance Parameters<br><i class="fas fa-caret-down fa-2x"></i>
+                        </button>
+                      </h2>
+                    </div>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                      <div class="card-body left-card-body">
+                        <div class="form-group my-form-group">
+                          <label for="bundles" class="small-label">Risk Aggregation</label><a href="#" data-toggle="modal" data-target="#modalBundling"><i class="fas fa-question-circle help"></i></a>
+
+                          <!-- Modal -->
+                          <div class="modal fade modal-withvid" id="modalBundling" tabindex="-1" role="dialog" aria-labelledby="modalBundlingTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="modalBundlingTitle">Risk Aggregation</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="modal-video" src="https://www.youtube.com/embed/zR3Igc3Rhfg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                  </div>
+                                  <p>Text text text text text Text text text text text text
+                                    Text text text text text Text text text text text text
+                                    Text text text text text Text text text text text text
+                                    Text text text text text Text text text text text text
+                                  </p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn blu-btn" data-dismiss="modal">Close</button>
+                                </div>
                               </div>
-                              <p>Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                                Text text text text text Text text text text text text
-                              </p>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn blu-btn" data-dismiss="modal">Close</button>
                             </div>
                           </div>
+
+                          <select class="form-control-sm my-select" id="bundles">
+                            <option value=0 selected>None</option>
+                            <option value=3>Nine groups</option>
+                            <option value=2>Four groups</option>
+                            <option value=1>One group (flat rate)</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group my-form-group">
+                          <label for="targetmargin" class="small-label">Premium loading</label><a href="#" data-toggle="modal" data-target="#modalMargin"><i class="fas fa-question-circle help"></i></a>
+                          <!-- Modal -->
+                          <div class="modal fade modal-withvid" id="modalMargin" tabindex="-1" role="dialog" aria-labelledby="modalMarginTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="modalMarginTitle">Premium Loading</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="modal-video" src="https://www.youtube.com/embed/AHrCI9eSJGQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                  </div>
+                                  <p>Text text text text text Text text text text text text
+                                    Text text text text text Text text text text text text
+                                    Text text text text text Text text text text text text
+                                    Text text text text text Text text text text text text
+                                  </p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn blu-btn" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <select class="form-control-sm my-select" id="targetmargin">
+                            <option value=0>No margin</option>
+                            <option value=0.1>10%</option>
+                            <option value=0.2 selected>20%</option>
+                            <option value=0.3>30%</option>
+                            <option value=0.4>40%</option>
+                            <option value=0.5>50%</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group my-form-group">
+                          <label for="minpayout" class="small-label">Minimum Payout</label><a href="#" data-toggle="modal" data-target="#modalMinpayout"><i class="fas fa-question-circle help"></i></a>
+                          <!-- Modal -->
+                          <div class="modal fade" id="modalMinpayout" tabindex="-1" role="dialog" aria-labelledby="modalMinpayoutTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="modalMinpayoutTitle">Minimum Payout</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="modal-video" src="https://www.youtube.com/embed/QjxIlV3uhY8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                  </div>
+                                  <p>Text text text text text Text text text text text text
+                                    Text text text text text Text text text text text text
+                                    Text text text text text Text text text text text text
+                                    Text text text text text Text text text text text text
+                                  </p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn blu-btn" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <select class="form-control-sm my-select" id="minpayout">
+                            <option value=0>No minimum</option>
+                            <option value=500 selected>500kg/ha equiv.</option>
+                            <option value=1000>1000kg/ha equiv.</option>
+                            <option value=2000>2000kg/ha equiv.</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group my-form-group">
+                          <label for="maxpayout" class="small-label">Maximum Payout<a href="http://www.youtube.com"><i class="fas fa-question-circle help"></i></a></label>
+                          <select class="form-control-sm my-select" id="maxpayout">
+                            <option value=999999 selected>No maximum</option>
+                            <option value=1000>1000kg/ha equiv.</option>
+                            <option value=2500>2500kg/ha equiv.</option>
+                          </select>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <div class="card-header left-card-header" id="headingTwo">
+                      <h2 class="mb-0">
+                        <button class="btn btn-link collapsed accordion-btn" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          Livelihood Parameters<br><i class="fas fa-caret-down fa-2x"></i>
+                        </button>
+                      </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+
+                      <div class="card-body left-card-body">
+                        <div class="form-group my-form-group">
+                          <label for="kgperperson" class="small-label">Min. crop per person<a href="http://www.youtube.com"><i class="fas fa-question-circle help"></i></a></label>
+                          <select class="form-control-sm my-select" id="kgperperson">
+                            <option value=90>90kg</option>
+                            <option value=180 selected>180kg</option>
+                            <option value=360>360kg</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group my-form-group">
+                          <label for="interest" class="small-label">Loan interest rate<a href="http://www.youtube.com"><i class="fas fa-question-circle help"></i></a></label>
+                          <select class="form-control-sm my-select" id="interest">
+                            <option value=0>Interest-free (0%)</option>
+                            <option value=0.05>5%</option>
+                            <option value=0.1>10%</option>
+                            <option value=0.2 selected>20%</option>
+                            <option value=0.35>35%</option>
+                            <option value=0.5>50%</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group my-form-group">
+                          <label for="deposit" class="small-label">Loan deposit<a href="http://www.youtube.com"><i class="fas fa-question-circle help"></i></a></label>
+                          <select class="form-control-sm my-select" id="deposit">
+                            <option value=0>0%</option>
+                            <option value=0.1>10%</option>
+                            <option value=0.25 selected>25%</option>
+                            <option value=0.5>50%</option>
+                            <option value=1.0>No loan required</option>
+                          </select>
                         </div>
                       </div>
-
-
-                      <select class="form-control-sm my-select" id="bundles">
-                        <option value=0 selected>None</option>
-                        <option value=3>Nine groups</option>
-                        <option value=2>Four groups</option>
-                        <option value=1>One group (flat rate)</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group my-form-group">
-                      <label for="targetmargin" class="small-label">Premium loading<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-                      <select class="form-control-sm my-select" id="targetmargin">
-                        <option value=0>No margin</option>
-                        <option value=0.1>10%</option>
-                        <option value=0.2 selected>20%</option>
-                        <option value=0.3>30%</option>
-                        <option value=0.4>40%</option>
-                        <option value=0.5>50%</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group my-form-group">
-                      <label for="minpayout" class="small-label">Minimum Payout<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-                      <select class="form-control-sm my-select" id="minpayout">
-                        <option value=0>No minimum</option>
-                        <option value=500 selected>500kg/ha equiv.</option>
-                        <option value=1000>1000kg/ha equiv.</option>
-                        <option value=2000>2000kg/ha equiv.</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group my-form-group">
-                      <label for="maxpayout" class="small-label">Maximum Payout<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-                      <select class="form-control-sm my-select" id="maxpayout">
-                        <option value=999999 selected>No maximum</option>
-                        <option value=1000>1000kg/ha equiv.</option>
-                        <option value=2500>2500kg/ha equiv.</option>
-                      </select>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-header left-card-header" id="headingTwo">
-                  <h2 class="mb-0">
-                    <button class="btn btn-link collapsed accordion-btn" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                      Livelihood Parameters<br><i class="fas fa-caret-down fa-2x"></i>
-                    </button>
-                  </h2>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-
-                  <div class="card-body left-card-body">
-                    <div class="form-group my-form-group">
-                      <label for="kgperperson" class="small-label">Min. crop per person<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-                      <select class="form-control-sm my-select" id="kgperperson">
-                        <option value=90>90kg</option>
-                        <option value=180 selected>180kg</option>
-                        <option value=360>360kg</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group my-form-group">
-                      <label for="interest" class="small-label">Loan interest rate<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-                      <select class="form-control-sm my-select" id="interest">
-                        <option value=0>Interest-free (0%)</option>
-                        <option value=0.05>5%</option>
-                        <option value=0.1>10%</option>
-                        <option value=0.2 selected>20%</option>
-                        <option value=0.35>35%</option>
-                        <option value=0.5>50%</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group my-form-group">
-                      <label for="deposit" class="small-label">Loan deposit<a href="http://www.youtube.com"><i class="fas fa-question-circle"></i></a></label>
-                      <select class="form-control-sm my-select" id="deposit">
-                        <option value=0>0%</option>
-                        <option value=0.1>10%</option>
-                        <option value=0.25 selected>25%</option>
-                        <option value=0.5>50%</option>
-                        <option value=1.0>No loan required</option>
-                      </select>
                     </div>
                   </div>
                 </div>
-              </div>
+                <button id="form-button" class="btn yel-btn">Analyse</button>
+              </form>
+
             </div>
+          </div>
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <button id="form-button" class="btn yel-btn">Analyse</button>
-          </form>
         </div>
 
 
       </div>
-      <div class="col-sm-10 full-height" id="right-content">
+      <div class="col-10 full-height" id="right-content">
         <div class="row" id="scatter-row">
-          <div class="col-sm-10 full-height" id="scattergraph">
+          <div class="col-10 full-height" id="scattergraph">
             <!-- Scatterplot goes here -->
           </div>
-          <div class="col-sm-2" id="scatterinfoholder">
+          <div class="col-2" id="scatterinfoholder">
             <div class="row graph-info" id="scatterinfo">
               <h6>Policy Performance</h6>
               <div class="info-label">Strike level</div>
@@ -317,21 +265,21 @@
           </div>
         </div>
         <div class="row" id="heatmaps-row">
-          <div class="col-sm-10">
+          <div class="col-10">
             <div class="row full-height" id="heatmaps-container">
-              <div class="col-sm-4" id="heatmap1">
+              <div class="col-4" id="heatmap1">
                 <!-- Heatmap with no ins goes here -->
               </div>
-              <div class="col-sm-4" id="heatmap2">
+              <div class="col-4" id="heatmap2">
                 <!-- Heatmap with ins goes here -->
               </div>
-              <div class="col-sm-4" id="heatmap3">
+              <div class="col-4" id="heatmap3">
                 <!-- Heatmap of improvement goes here -->
               </div>
             </div>
             <!-- Heatmaps go here -->
           </div>
-          <div class="col-sm-2 full-height graph-info" id="heatmapsinfoholder">
+          <div class="col-2 full-height graph-info" id="heatmapsinfoholder">
             <div class="row graph-info" id="heatmapsinfo">
               <h6>Individual farms & years</h6>
               <div class="info-label">Site and Year:</div>

@@ -444,7 +444,7 @@ function heatmapInfo(e) {
     var endHtml = '';
     if (heatmapData['improvement'][cellNumber[0]][cellNumber[1]] > 0) {
       sign = '+';
-      startHtml = '<span style="color: green">';
+      startHtml = '<span style="color: limegreen">';
       endHtml = '</span>';
     } else if (heatmapData['improvement'][cellNumber[0]][cellNumber[1]] < 0) {
       startHtml = '<span style="color: red">';
@@ -460,6 +460,14 @@ function heatmapInfo(e) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    //Prevent videos form playing on when modal window closed
+    $('.modal').on('hide.bs.modal', function() {
+      var memory = $(this).html()
+      $(this).html(memory);
+    })
+
+
+    // Add blank scatter graph
     Plotly.newPlot('scattergraph', [], layoutScat, {displayModeBar: false});
 
     // Create blank heatmap axes to show initially

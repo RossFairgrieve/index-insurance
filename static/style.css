@@ -15,6 +15,10 @@ h1, h2, h3, h4, h5, h6, p, a {
   text-decoration: none;
 }
 
+.accordion {
+  width: 100%;
+}
+
 @media screen and (min-width: 576px) {
   .btn.accordion-btn {
     font-size: 6px;
@@ -40,11 +44,11 @@ h1, h2, h3, h4, h5, h6, p, a {
   margin-left: 5px;
 }
 
-.fa-question-circle {
+.fa-question-circle.help {
   margin-left: 5px;
 }
 
-.fa-question-circle:hover {
+.fa-question-circle.help:hover {
   color: #1e3d59;
 }
 
@@ -177,7 +181,73 @@ body {
 #side-form {
   height: 80%;
   padding: 0 10% 5% 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
 
+.nav-tabs {
+  display: flex;
+  justify-content: space-around;
+}
+
+.nav-tabs li {
+  width: 50%;
+  text-align: center;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 800px) {
+  .nav-tabs li {
+    font-size: calc(8px + 10 * ((100vw - 800px) / 1000));
+  }
+}
+@media screen and (min-width: 1800px) {
+  .nav-tabs li {
+    font-size: 18px;
+  }
+}
+
+.nav-tabs li a {
+  color: #9c834e;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 5% 0 5% 0;
+}
+
+.nav-tabs a.active {
+  color: #ffc13b;
+}
+
+.tab-pane {
+  margin-top: 10px;
+}
+
+
+#instructions {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5%;
+}
+
+#instructions img {
+  width: 100%;
+  margin-bottom: 5%;
+}
+
+#instructions ul {
+  padding-left: 7%;
+}
+
+@media screen and (min-width: 800px) {
+  #instructions li {
+    font-size: calc(8px + 6 * ((100vw - 800px) / 700));
+  }
+}
+@media screen and (min-width: 1500px) {
+  #instructions li {
+    font-size: 14px;
+  }
 }
 
 .full-width {

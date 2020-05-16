@@ -79,7 +79,7 @@ var traceHeatmapBase = {
   xgap: 1,
   ygap: 1,
   zmax: 0,
-  zmin: -3700,
+  zmin: -1900,
   colorscale: 'Hot',
   hovertemplate:'',
   colorbar: {
@@ -188,18 +188,18 @@ function drawHeatmap(d=null) {
 
       var traceImp = JSON.parse(JSON.stringify(traceCritNoins));
       traceImp.z = heatmapData['improvement'];
-      traceImp.colorscale = [['0.0', 'rgb(150,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,150,0)']];
-      traceImp.zmax = 3200;
+      traceImp.colorscale = [['0.0', 'rgb(125,0,0)'], ['0.25', 'rgb(255,125,125)'], ['0.5', 'rgb(255,255,255)'], ['0.75', 'rgb(125,255,125)'], ['1.0', 'rgb(0,125,0)']];
+      traceImp.zmax = 1800;
       traceImp.zmid = 0;
-      traceImp.zmin = -3200;
+      traceImp.zmin = -1800;
 
       var layoutNoins = JSON.parse(JSON.stringify(layoutHeatmapBase));
       var layoutIns = JSON.parse(JSON.stringify(layoutHeatmapBase));
       var layoutImp = JSON.parse(JSON.stringify(layoutHeatmapBase));
 
-      layoutNoins.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Critical shortfall<br>No insurance (kg)</span>';
-      layoutIns.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Critical shortfall<br>With insurance (kg)</span>';
-      layoutImp.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Change with<br>insurance (kg)</span>';
+      layoutNoins.title.text = '<span style="font-weight: bold;">CRITICAL SHORTFALL<br>NO INSURANCE (kg/ha)</span>';
+      layoutIns.title.text = '<span style="font-weight: bold;">CRITICAL SHORTFALL<br>WITH INSURANCE (kg/ha)</span>';
+      layoutImp.title.text = '<span style="font-weight: bold;">CHANGE<br>WITH INSURANCE (kg/ha)</span>';
 
       var heatmap1text = [];
       for (var i = 0; i < heatmapData['sitenames'].length; i++) {
@@ -484,18 +484,18 @@ document.addEventListener('DOMContentLoaded', () => {
       traceCritBlank.x = heatmapDataBlank['columns'];
 
       var traceImpBlank = JSON.parse(JSON.stringify(traceCritBlank));
-      traceImpBlank.colorscale = [['0.0', 'rgb(175,0,0)'], ['0.5', 'rgb(255,255,255)'], ['1.0', 'rgb(0,170,0)']];
-      traceImpBlank.zmax = 3500;
+      traceImpBlank.colorscale = [['0.0', 'rgb(125,0,0)'], ['0.25', 'rgb(255,125,125)'], ['0.5', 'rgb(255,255,255)'], ['0.75', 'rgb(125,255,125)'], ['1.0', 'rgb(0,125,0)']];
+      traceImpBlank.zmax = 1800;
       traceImpBlank.zmid = 0;
-      traceImpBlank.zmin = -3500;
+      traceImpBlank.zmin = -1800;
 
       var layout1 = JSON.parse(JSON.stringify(layoutHeatmapBase));
       var layout2 = JSON.parse(JSON.stringify(layoutHeatmapBase));
       var layout3 = JSON.parse(JSON.stringify(layoutHeatmapBase));
 
-      layout1.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Critical shortfall<br>No insurance (kg)</span>'
-      layout2.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Critical shortfall<br>With insurance (kg)</span>'
-      layout3.title.text = '<span style="font-weight: bold; text-transform: uppercase;">Change with<br>insurance (kg)</span>'
+      layout1.title.text = '<span style="font-weight: bold;">CRITICAL SHORTFALL<br>NO INSURANCE (kg/ha)</span>';
+      layout2.title.text = '<span style="font-weight: bold;">CRITICAL SHORTFALL<br>WITH INSURANCE (kg/ha)</span>';
+      layout3.title.text = '<span style="font-weight: bold;">CHANGE<br>WITH INSURANCE (kg/ha)</span>';
 
       Plotly.newPlot('heatmap1', [traceCritBlank], layout1, {displayModeBar: false});
       Plotly.newPlot('heatmap2', [traceCritBlank], layout2, {displayModeBar: false});

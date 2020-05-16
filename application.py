@@ -148,7 +148,9 @@ def heatmap():
                                                      startyear=startyear)
 
     # min_cl = cl_noins.min().min()
-
+    payouts = payouts.loc[:,startyear:].sort_index(ascending=False)
+    premiums = premiums.loc[:,startyear:].sort_index(ascending=False)
+    crit_thresh_df = crit_thresh_df.loc[:,startyear:].sort_index(ascending=False)
     cl_ins = cl_ins.sort_index(ascending=False)
     cl_noins = cl_noins.sort_index(ascending=False)
     indexyieldstosend = indexyields.loc[:,startyear:].sort_index(ascending=False)
@@ -166,7 +168,10 @@ def heatmap():
 
     sitenames = [f"Farm {x}" for x in indexyieldstosend.index]
 
-    heatmapdata = {"cl_noins": cl_noins.values.tolist(),
+    heatmapdata = {"payouts": payouts.values.tolist(),
+                   "premiums": premiums.values.tolist(),
+                   "crit_thresh_df": crit_thresh_df.values.tolist(),
+                   "cl_noins": cl_noins.values.tolist(),
                    "cl_ins": cl_ins.values.tolist(),
                    "improvement": improvement.values.tolist(),
                    "columns": cl_ins.columns.tolist(),

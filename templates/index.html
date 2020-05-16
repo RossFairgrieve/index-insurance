@@ -63,7 +63,7 @@
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                       <div class="card-body left-card-body">
                         <div class="form-group my-form-group">
-                          <label for="bundles" class="small-label">Risk Aggregation</label><a href="#" data-toggle="modal" data-target="#modalBundling"><i class="fas fa-question-circle help"></i></a>
+                          <label for="bundles" class="small-label">Risk Aggregation</label><a href="#modalBundling" data-toggle="modal"><i class="fas fa-question-circle help"></i></a>
 
                           <!-- Modal -->
                           <div class="modal fade modal-withvid" id="modalBundling" tabindex="-1" role="dialog" aria-labelledby="modalBundlingTitle" aria-hidden="true">
@@ -101,7 +101,7 @@
                         </div>
 
                         <div class="form-group my-form-group">
-                          <label for="targetmargin" class="small-label">Premium loading</label><a href="#" data-toggle="modal" data-target="#modalMargin"><i class="fas fa-question-circle help"></i></a>
+                          <label for="targetmargin" class="small-label">Premium loading</label><a href="#modalMargin" data-toggle="modal"><i class="fas fa-question-circle help"></i></a>
                           <!-- Modal -->
                           <div class="modal fade modal-withvid" id="modalMargin" tabindex="-1" role="dialog" aria-labelledby="modalMarginTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -139,7 +139,7 @@
                         </div>
 
                         <div class="form-group my-form-group">
-                          <label for="minpayout" class="small-label">Minimum Payout</label><a href="#" data-toggle="modal" data-target="#modalMinpayout"><i class="fas fa-question-circle help"></i></a>
+                          <label for="minpayout" class="small-label">Minimum Payout</label><a href="#modalMinpayout" data-toggle="modal"><i class="fas fa-question-circle help"></i></a>
                           <!-- Modal -->
                           <div class="modal fade" id="modalMinpayout" tabindex="-1" role="dialog" aria-labelledby="modalMinpayoutTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -279,6 +279,64 @@
             </div>
             <!-- Heatmaps go here -->
           </div>
+
+          <!-- Heatmap info modal -->
+          <div class="modal fade" id="modalHeatmapinfo" tabindex="-1" role="dialog" aria-labelledby="modalHeatmapinfoTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalHeatmapinfoTitle"></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table id="heatmap-table" style="width:100%">
+                    <tr>
+                      <td>Critical threshold:</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>Actual yield:</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>Index-based yield:</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>Index over/under estimation:</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>Critical shortfall - no insurance:</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>Insurance Payout:</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>Insurance Premium</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>Critical shortfall - with insurance:</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>Change in shortfall with insurance:</td>
+                      <td></td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn blu-btn" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="col-2 full-height graph-info" id="heatmapsinfoholder">
             <div class="row graph-info" id="heatmapsinfo">
               <h6>Individual farms & years</h6>

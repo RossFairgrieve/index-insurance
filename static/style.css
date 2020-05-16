@@ -446,6 +446,16 @@ select {
     font-size: 14px;
   }
 
+td {
+  border: 1px solid #EEEEEE;
+  padding: 10px;
+}
+
+.modal-title {
+  color: #1e3d59;
+  font-weight: bold;
+  text-transform: uppercase;
+}
 
 
 /* @media screen and (max-width: 600px) {

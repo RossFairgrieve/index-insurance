@@ -253,7 +253,8 @@ function drawHeatmap(d=null) {
 
       document.getElementById('heatmap1').on('plotly_click', changeCell);
       // document.getElementById('heatmap1').on('plotly_click', annotateHeatmaps);
-      document.getElementById('heatmap1').on('plotly_click', heatmapInfo);
+      // document.getElementById('heatmap1').on('plotly_click', heatmapInfo);
+      document.getElementById('heatmap1').on('plotly_click', heatmapInfo2);
 
       document.getElementById('heatmap2').on('plotly_click', changeCell);
       document.getElementById('heatmap2').on('plotly_click', heatmapInfo);
@@ -453,6 +454,94 @@ function heatmapInfo(e) {
     document.getElementById('improvement').innerHTML = startHtml + sign + (Math.round(heatmapData['improvement'][cellNumber[0]][cellNumber[1]]).toString()) + ' kg' + endHtml;
   };
 };
+
+
+// -------------------------------------
+
+
+function heatmapInfo2(e) {
+
+  document.getElementById("modalHeatmapinfoTitle").innerHTML = `Year ${heatmapData['columns'][e.points[0].pointNumber[1]]} - ${heatmapData['sitenames'][e.points[0].pointNumber[0]]}`
+
+  var heatmapTable = document.getElementById("heatmap-table");
+  heatmapTable.rows[0].cells[1].innerHTML = formatStat(heatmapData['crit_thresh_df'][cellNumber[0]][cellNumber[1]]);
+  heatmapTable.rows[1].cells[1].innerHTML = formatStat(heatmapData['realyields'][cellNumber[0]][cellNumber[1]]);
+  heatmapTable.rows[2].cells[1].innerHTML = formatStat(heatmapData['indexyields'][cellNumber[0]][cellNumber[1]]);
+  heatmapTable.rows[3].cells[1].innerHTML = formatStat((heatmapData['indexyields'][cellNumber[0]][cellNumber[1]]-heatmapData['realyields'][cellNumber[0]][cellNumber[1]]),0,0,1,"kg/ha",1);
+  heatmapTable.rows[4].cells[1].innerHTML = formatStat(-heatmapData['cl_noins'][cellNumber[0]][cellNumber[1]]);
+  heatmapTable.rows[5].cells[1].innerHTML = formatStat(heatmapData['payouts'][cellNumber[0]][cellNumber[1]], units="kg/ha equiv.");
+  heatmapTable.rows[6].cells[1].innerHTML = formatStat(heatmapData['premiums'][cellNumber[0]][cellNumber[1]], units="kg/ha equiv.");
+  heatmapTable.rows[7].cells[1].innerHTML = formatStat(-heatmapData['cl_ins'][cellNumber[0]][cellNumber[1]]);
+  heatmapTable.rows[8].cells[1].innerHTML = formatStat(heatmapData['improvement'][cellNumber[0]][cellNumber[1]], applycolor=1, applysign=1);
+
+  $('#modalHeatmapinfo').modal('show');
+
+};
+
+
+// -------------------------------------
+
+
+function formatStat(value, applycolor=0, applysign=0, makeInt=1, units="kg/ha", ou=0) {
+  var sign = '';
+  var startHtml = '';
+  var endHtml = '';
+  var suffix = '';
+  var fixedValue = value;
+
+  if (value > 0) {
+    if (applycolor == 1) {
+      startHtml = '<span style="color: limegreen">'
+      endHtml = '</span>'
+    }
+    if (applysign == 1) {
+      sign = '+'
+    }
+    if (ou == 1) {
+      suffix = 'over'
+    }
+
+  } else if (value < 0) {
+    if (applycolor == 1) {
+      startHtml = '<span style="color: red">';
+      endHtml = '</span>';
+    }
+    if (ou == 1) {
+      suffix = 'under';
+    }
+  }
+
+  if (makeInt==1) {
+    fixedValue = Math.round(value);
+  } else {
+    fixedValue = value;
+  }
+
+  return `${startHtml}${sign}${fixedValue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} ${units} ${suffix}${endHtml}`
+};
+  // if (e != null) {
+  //
+  //   cellNumber = [e.points[0].pointNumber[0], e.points[0].pointNumber[1]];
+  //
+  //   document.getElementById('site-year').innerHTML = heatmapData['sitenames'][e.points[0].pointNumber[0]] + ' - ' + heatmapData['columns'][e.points[0].pointNumber[1]];
+  //   document.getElementById('index-yield').innerHTML = heatmapData['indexyields'][cellNumber[0]][cellNumber[1]].toString() + ' kg/ha';
+  //   document.getElementById('real-yield').innerHTML = heatmapData['realyields'][cellNumber[0]][cellNumber[1]].toString() + ' kg/ha';
+  //   document.getElementById('crit-loss-noins').innerHTML = -(Math.round(heatmapData['cl_noins'][cellNumber[0]][cellNumber[1]])).toString() + ' kg';
+  //   document.getElementById('crit-loss-ins').innerHTML = -(Math.round(heatmapData['cl_ins'][cellNumber[0]][cellNumber[1]])).toString() + ' kg';
+  //   var sign = '';
+  //   var startHtml = '';
+  //   var endHtml = '';
+  //   if (heatmapData['improvement'][cellNumber[0]][cellNumber[1]] > 0) {
+  //     sign = '+';
+  //     startHtml = '<span style="color: limegreen">';
+  //     endHtml = '</span>';
+  //   } else if (heatmapData['improvement'][cellNumber[0]][cellNumber[1]] < 0) {
+  //     startHtml = '<span style="color: red">';
+  //     endHtml = '</span>';
+  //   }
+  //   document.getElementById('improvement').innerHTML = startHtml + sign + (Math.round(heatmapData['improvement'][cellNumber[0]][cellNumber[1]]).toString()) + ' kg' + endHtml;
+  // };
+
 
 
 // -------------------------------------
